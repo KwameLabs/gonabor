@@ -1,0 +1,2499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoNabor — Useful Things. Near You.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   GONABOR DESIGN SYSTEM
+   Palette derived from the GoNabor logo:
+   - Navy (wordmark, roofline pillar, structure/nav)
+   - Orange -> Gold (the smiling pin, primary energy, Home Harvest)
+   - Green (roof windows, growth, Give/free, success)
+   ================================================================ */
+:root{
+  --navy-900:#0F2242;
+  --navy-800:#152F55;
+  --navy-700:#1B3A6B;
+  --navy-600:#274a80;
+  --navy-100:#E7ECF5;
+
+  --orange-600:#E85F0F;
+  --orange-500:#F97316;
+  --gold-400:#FBBF24;
+  --sunset: linear-gradient(135deg,#F97316 0%,#FBBF24 100%);
+  --sunset-soft: linear-gradient(135deg,#FFF3E4 0%,#FFEBD1 100%);
+
+  --green-700:#1F7A3A;
+  --green-600:#2FA84F;
+  --green-500:#3AA655;
+  --green-100:#E6F6EA;
+
+  --bg:#FBF9F4;
+  --bg-dim:#F4F0E7;
+  --card:#FFFFFF;
+  --ink:#16233D;
+  --ink-soft:#5B6B84;
+  --ink-faint:#94A1B5;
+  --line:#EAE4D8;
+  --line-soft:#F0ECE2;
+  --danger:#E0483E;
+  --danger-soft:#FDECEA;
+
+  --radius-lg:22px;
+  --radius-md:16px;
+  --radius-sm:11px;
+  --radius-pill:999px;
+
+  --shadow-card: 0 1px 2px rgba(22,35,61,.04), 0 8px 24px -12px rgba(22,35,61,.14);
+  --shadow-pop: 0 12px 32px -8px rgba(22,35,61,.28);
+
+  --font-display:'Baloo 2', system-ui, sans-serif;
+  --font-body:'Inter', system-ui, sans-serif;
+  --font-data:'Space Grotesk', 'Inter', system-ui, sans-serif;
+}
+
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0; padding:0;}
+body{
+  font-family:var(--font-body);
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 600px at 15% -10%, #FFF3E2 0%, transparent 60%),
+    radial-gradient(1000px 500px at 100% 0%, #EAF6ED 0%, transparent 55%),
+    var(--bg-dim);
+  min-height:100vh;
+}
+button{font-family:inherit; cursor:pointer;}
+input,textarea,select{font-family:inherit;}
+img{max-width:100%; display:block;}
+::selection{background:#FFE1B8;}
+a{color:inherit;}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+}
+
+/* ---------------- Demo shell / toolbar ---------------- */
+.demo-shell{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:22px 16px 60px;
+}
+.demo-toolbar{
+  width:100%;
+  max-width:1200px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:10px 18px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow-card);
+  margin-bottom:26px;
+  flex-wrap:wrap;
+}
+.demo-toolbar .brand{
+  display:flex; align-items:center; gap:10px;
+}
+.demo-toolbar .brand img{height:30px; width:auto;}
+.demo-toolbar .brand .meta{display:flex; flex-direction:column; line-height:1.15;}
+.demo-toolbar .brand .meta b{font-family:var(--font-display); font-size:15px; color:var(--navy-700);}
+.demo-toolbar .brand .meta span{font-size:11px; color:var(--ink-faint); font-weight:600; letter-spacing:.02em;}
+.view-toggle{
+  display:flex; gap:4px; background:var(--bg-dim); padding:4px; border-radius:var(--radius-pill);
+  border:1px solid var(--line);
+}
+.view-toggle button{
+  border:none; background:transparent; padding:9px 16px; border-radius:var(--radius-pill);
+  font-size:13px; font-weight:700; color:var(--ink-soft); transition:.15s;
+}
+.view-toggle button.active{background:var(--navy-700); color:#fff; box-shadow:0 4px 10px -3px rgba(27,58,107,.5);}
+.demo-toolbar .reset-btn{
+  border:1px solid var(--line); background:#fff; color:var(--ink-soft); font-size:12.5px; font-weight:700;
+  padding:9px 14px; border-radius:var(--radius-pill); display:flex; align-items:center; gap:6px;
+}
+.demo-toolbar .reset-btn:hover{border-color:var(--navy-600); color:var(--navy-700);}
+
+/* ================= PHONE FRAME ================= */
+.phone-wrap{display:none;}
+.phone-wrap.active{display:block;}
+.phone{
+  width:390px;
+  max-width:94vw;
+  height:844px;
+  max-height:88vh;
+  background:var(--navy-900);
+  border-radius:46px;
+  padding:14px;
+  box-shadow: var(--shadow-pop), 0 0 0 2px #0a1730;
+  position:relative;
+}
+.phone-screen{
+  width:100%; height:100%;
+  background:var(--bg);
+  border-radius:32px;
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+.notch{
+  position:absolute; top:14px; left:50%; transform:translateX(-50%);
+  width:120px; height:26px; background:var(--navy-900); border-radius:0 0 18px 18px; z-index:50;
+}
+.statusbar{
+  height:46px; flex:0 0 auto; display:flex; align-items:flex-end; justify-content:space-between;
+  padding:0 26px 6px; font-size:14px; font-weight:700; color:var(--ink); background:transparent; z-index:20; position:relative;
+}
+.statusbar .icons{display:flex; gap:5px; align-items:center;}
+
+.screen-area{
+  flex:1 1 auto;
+  overflow-y:auto;
+  overflow-x:hidden;
+  position:relative;
+  scrollbar-width:none;
+}
+.screen-area::-webkit-scrollbar{display:none;}
+
+.screen{
+  min-height:100%;
+  display:flex;
+  flex-direction:column;
+  animation:screenIn .22s ease;
+}
+@keyframes screenIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+
+/* ---------------- Bottom Nav ---------------- */
+.bottomnav{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  padding:8px 6px calc(env(safe-area-inset-bottom,0px) + 8px);
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(10px);
+  border-top:1px solid var(--line);
+  position:relative;
+  z-index:30;
+}
+.navitem{
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  background:none; border:none; color:var(--ink-faint); font-size:10.5px; font-weight:700;
+  padding:4px 8px; width:64px;
+}
+.navitem svg{width:22px; height:22px;}
+.navitem.on{color:var(--navy-700);}
+.navitem.on svg{stroke:var(--navy-700);}
+.navitem .postbtn{
+  width:52px; height:52px; border-radius:50%;
+  background:var(--sunset);
+  display:flex; align-items:center; justify-content:center;
+  margin-top:-30px;
+  box-shadow:0 10px 20px -6px rgba(249,115,22,.55), 0 0 0 5px var(--bg);
+}
+.navitem .postbtn svg{width:24px; height:24px; stroke:#fff;}
+
+/* ---------------- Top Nav ---------------- */
+.topbar{
+  flex:0 0 auto;
+  display:flex; align-items:center; gap:10px;
+  padding:10px 16px 12px;
+  background:var(--bg);
+  position:relative; z-index:10;
+}
+.topbar .back{
+  width:34px; height:34px; border-radius:50%; background:#fff; border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+}
+.topbar h1{font-family:var(--font-display); font-size:18px; margin:0; flex:1; color:var(--navy-800);}
+.topbar .action{
+  width:34px; height:34px; border-radius:50%; background:#fff; border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+}
+
+/* ---------------- Typography ---------------- */
+h1,h2,h3{font-family:var(--font-display); color:var(--navy-800); margin:0;}
+.eyebrow{font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--orange-600);}
+.muted{color:var(--ink-soft);}
+.faint{color:var(--ink-faint);}
+
+/* ---------------- Buttons ---------------- */
+.btn{
+  border:none; border-radius:var(--radius-pill); font-weight:700; font-size:14.5px;
+  padding:14px 20px; display:flex; align-items:center; justify-content:center; gap:8px;
+  transition:.15s; width:100%;
+}
+.btn:active{transform:scale(.98);}
+.btn-primary{background:var(--navy-700); color:#fff; box-shadow:0 8px 18px -8px rgba(27,58,107,.6);}
+.btn-sunset{background:var(--sunset); color:#fff; box-shadow:0 8px 18px -8px rgba(249,115,22,.6);}
+.btn-green{background:var(--green-600); color:#fff; box-shadow:0 8px 18px -8px rgba(47,168,79,.55);}
+.btn-outline{background:#fff; color:var(--navy-700); border:1.5px solid var(--navy-700);}
+.btn-outline-soft{background:#fff; color:var(--ink); border:1.5px solid var(--line);}
+.btn-ghost{background:transparent; color:var(--ink-soft); font-weight:600;}
+.btn-danger-outline{background:#fff; color:var(--danger); border:1.5px solid var(--danger-soft);}
+.btn-sm{padding:9px 14px; font-size:13px; width:auto;}
+.btn[disabled]{opacity:.45; pointer-events:none;}
+
+/* ---------------- Cards ---------------- */
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius-md);
+  box-shadow:var(--shadow-card);
+}
+.pad{padding:16px;}
+.pad-lg{padding:20px;}
+
+/* ---------------- Badges ---------------- */
+.badge{
+  display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:800;
+  padding:4px 9px; border-radius:var(--radius-pill); letter-spacing:.01em;
+}
+.badge-free{background:var(--green-100); color:var(--green-700);}
+.badge-negotiable{background:#FFF3E2; color:var(--orange-600);}
+.badge-harvest{background:var(--sunset); color:#fff;}
+.badge-verified{background:var(--navy-100); color:var(--navy-700);}
+.badge-status-active{background:var(--green-100); color:var(--green-700);}
+.badge-status-reserved{background:#FFF3E2; color:var(--orange-600);}
+.badge-status-sold{background:var(--navy-100); color:var(--navy-700);}
+.badge-status-given{background:var(--green-100); color:var(--green-700);}
+
+/* ---------------- Inputs ---------------- */
+.field{margin-bottom:16px;}
+.field label{display:block; font-size:12.5px; font-weight:700; color:var(--ink-soft); margin-bottom:7px;}
+.field input[type=text], .field input[type=tel], .field input[type=number], .field textarea, .field select{
+  width:100%; border:1.5px solid var(--line); border-radius:var(--radius-sm); padding:13px 14px;
+  font-size:14.5px; color:var(--ink); background:#fff; outline:none; transition:.15s;
+}
+.field input:focus, .field textarea:focus, .field select:focus{border-color:var(--navy-600); box-shadow:0 0 0 3px var(--navy-100);}
+.field textarea{resize:none; min-height:88px;}
+.searchbar{
+  display:flex; align-items:center; gap:9px; background:#fff; border:1.5px solid var(--line);
+  border-radius:var(--radius-pill); padding:12px 16px;
+}
+.searchbar input{border:none; outline:none; flex:1; font-size:14px; background:transparent;}
+.searchbar svg{flex:0 0 auto; stroke:var(--ink-faint);}
+
+/* ---------------- Tabs ---------------- */
+.tabs{display:flex; gap:6px; overflow-x:auto; padding:2px 0; scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{
+  flex:0 0 auto; padding:9px 15px; border-radius:var(--radius-pill); font-size:13px; font-weight:700;
+  background:#fff; border:1.5px solid var(--line); color:var(--ink-soft); white-space:nowrap;
+}
+.tab.on{background:var(--navy-700); border-color:var(--navy-700); color:#fff;}
+.tab.on.harvest{background:var(--sunset); border-color:transparent;}
+
+/* ---------------- Product / Harvest cards ---------------- */
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.pcard{
+  background:#fff; border:1px solid var(--line); border-radius:var(--radius-md); overflow:hidden;
+  box-shadow:var(--shadow-card); text-align:left; border-width:1px;
+}
+.pcard .thumb{
+  height:110px; width:100%; display:flex; align-items:center; justify-content:center; font-size:38px;
+  position:relative;
+}
+.pcard .thumb.thumb-photo{
+  background-size:cover; background-position:center; font-size:0;
+}
+.pcard .thumb.thumb-photo::after{
+  content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,.22) 100%);
+}
+.pcard .thumb .save{
+  position:absolute; top:7px; right:7px; width:26px; height:26px; border-radius:50%;
+  background:rgba(255,255,255,.9); display:flex; align-items:center; justify-content:center; border:none;
+}
+.pcard .body{padding:10px 11px 12px;}
+.pcard .title{font-size:13px; font-weight:700; color:var(--ink); line-height:1.25; margin-bottom:4px; height:33px; overflow:hidden;}
+.pcard .price{font-family:var(--font-data); font-weight:700; font-size:14.5px; color:var(--navy-800);}
+.pcard .price.free{color:var(--green-700);}
+.pcard .meta-row{display:flex; align-items:center; justify-content:space-between; margin-top:6px;}
+.pcard .loc{font-size:10.5px; color:var(--ink-faint); display:flex; align-items:center; gap:3px;}
+
+.rowcard{
+  display:flex; gap:12px; background:#fff; border:1px solid var(--line); border-radius:var(--radius-md);
+  padding:10px; box-shadow:var(--shadow-card); align-items:center; text-align:left; width:100%;
+}
+.rowcard .thumb-sm{width:64px; height:64px; border-radius:var(--radius-sm); flex:0 0 auto; display:flex; align-items:center; justify-content:center; font-size:26px; background-size:cover; background-position:center;}
+.rowcard .info{flex:1; min-width:0;}
+.rowcard .info .title{font-size:13.5px; font-weight:700; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.rowcard .info .sub{font-size:11.5px; color:var(--ink-faint);}
+
+/* thumb color rotation for mock imagery */
+.tc1{background:linear-gradient(135deg,#EAF1FF,#DCE7FB);}
+.tc2{background:linear-gradient(135deg,#FFF3E2,#FFE6C4);}
+.tc3{background:linear-gradient(135deg,#E6F6EA,#D3EFD9);}
+.tc4{background:linear-gradient(135deg,#FDEDEA,#FBDCD5);}
+.tc5{background:linear-gradient(135deg,#F1ECFB,#E4DAF7);}
+.tc6{background:linear-gradient(135deg,#FFF9E0,#FFF0BD);}
+
+/* ---------------- Feature card (Home Harvest) ---------------- */
+.harvest-feature{
+  background:var(--sunset); border-radius:var(--radius-lg); padding:20px; color:#fff; position:relative; overflow:hidden;
+}
+.harvest-feature::after{
+  content:"🍅🌿🍌"; position:absolute; right:-6px; bottom:-14px; font-size:64px; opacity:.22; letter-spacing:4px;
+}
+.harvest-feature h2{color:#fff; font-size:21px;}
+.harvest-feature p{color:rgba(255,255,255,.92); font-size:13px; margin:6px 0 14px;}
+.harvest-feature .tags{font-size:12px; color:rgba(255,255,255,.85); margin-bottom:14px;}
+.harvest-feature .cta{
+  display:inline-flex; align-items:center; gap:6px; background:#fff; color:var(--orange-600); font-weight:800;
+  font-size:13px; padding:10px 16px; border-radius:var(--radius-pill); border:none;
+}
+
+/* ---------------- Quick actions ---------------- */
+.quick3{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
+.qbtn{
+  background:#fff; border:1.5px solid var(--line); border-radius:var(--radius-md); padding:14px 6px;
+  display:flex; flex-direction:column; align-items:center; gap:7px; font-size:12px; font-weight:700; color:var(--ink);
+}
+.qbtn .ic{width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:19px;}
+.qbtn.give .ic{background:var(--green-100);}
+.qbtn.sell .ic{background:#FFF3E2;}
+.qbtn.harvest .ic{background:var(--sunset);}
+
+/* ---------------- Empty / success states ---------------- */
+.empty-state{display:flex; flex-direction:column; align-items:center; text-align:center; padding:50px 30px; gap:12px;}
+.empty-state .smiley{width:64px; height:64px;}
+.empty-state h3{font-size:16px;}
+.empty-state p{font-size:13px; color:var(--ink-faint); max-width:240px;}
+
+.success-state{display:flex; flex-direction:column; align-items:center; text-align:center; padding:60px 28px 30px; gap:14px; flex:1;}
+.success-state .burst{width:84px; height:84px; border-radius:50%; background:var(--sunset); display:flex; align-items:center; justify-content:center; font-size:38px; box-shadow:0 14px 28px -10px rgba(249,115,22,.55);}
+.success-state.give .burst{background:var(--green-600); box-shadow:0 14px 28px -10px rgba(47,168,79,.5);}
+.success-state h2{font-size:20px;}
+.success-state p{font-size:13.5px; color:var(--ink-soft); max-width:260px;}
+
+/* ---------------- Step progress (post flows) ---------------- */
+.steps{display:flex; gap:6px; padding:0 16px 14px;}
+.steps i{flex:1; height:5px; border-radius:3px; background:var(--line);}
+.steps i.done{background:var(--sunset);}
+
+/* ---------------- Photo upload grid ---------------- */
+.photogrid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
+.photobox{
+  aspect-ratio:1; border-radius:var(--radius-sm); border:1.5px dashed var(--line); background:#fff;
+  display:flex; align-items:center; justify-content:center; font-size:22px; color:var(--ink-faint); position:relative; overflow:hidden;
+}
+.photobox.filled{border-style:solid; border-color:transparent;}
+.photobox .rm{position:absolute; top:4px; right:4px; width:18px; height:18px; border-radius:50%; background:rgba(0,0,0,.55); color:#fff; font-size:11px; display:flex; align-items:center; justify-content:center; border:none;}
+
+/* ---------------- Chip select ---------------- */
+.chipwrap{display:flex; flex-wrap:wrap; gap:8px;}
+.chip{padding:9px 15px; border-radius:var(--radius-pill); border:1.5px solid var(--line); background:#fff; font-size:13px; font-weight:700; color:var(--ink-soft);}
+.chip.on{background:var(--navy-700); border-color:var(--navy-700); color:#fff;}
+.chip.on.harvest{background:var(--sunset); border-color:transparent;}
+.chip.on.give{background:var(--green-600); border-color:var(--green-600);}
+
+/* ---------------- Toggle pair (Fixed/Negotiable, Sell/Give) ---------------- */
+.pairsel{display:flex; gap:10px;}
+.pairsel button{
+  flex:1; padding:14px 8px; border-radius:var(--radius-md); border:1.5px solid var(--line); background:#fff;
+  font-weight:700; font-size:13.5px; color:var(--ink-soft); display:flex; flex-direction:column; align-items:center; gap:4px;
+}
+.pairsel button.on{border-color:var(--navy-700); background:var(--navy-100); color:var(--navy-800);}
+
+/* ---------------- Bottom sheet / Modal ---------------- */
+.overlay{
+  position:absolute; inset:0; background:rgba(15,34,66,.45); z-index:80; display:none; align-items:flex-end;
+}
+.overlay.show{display:flex;}
+.sheet{
+  width:100%; background:#fff; border-radius:22px 22px 0 0; padding:8px 18px 22px; max-height:80%; overflow-y:auto;
+  animation:sheetUp .22s ease;
+}
+@keyframes sheetUp{from{transform:translateY(30px); opacity:0;} to{transform:none; opacity:1;}}
+.sheet .grabber{width:38px; height:4px; background:var(--line); border-radius:3px; margin:8px auto 14px;}
+.sheet h3{font-size:16.5px; margin-bottom:14px;}
+
+.overlay.center{align-items:center; justify-content:center;}
+.modal{
+  width:88%; background:#fff; border-radius:20px; padding:22px; animation:sheetUp .18s ease;
+}
+
+/* ---------------- Toast ---------------- */
+.toast{
+  position:absolute; left:50%; bottom:90px; transform:translateX(-50%); background:var(--navy-900); color:#fff;
+  font-size:12.5px; font-weight:600; padding:10px 16px; border-radius:var(--radius-pill); z-index:120; opacity:0;
+  transition:.25s; pointer-events:none; white-space:nowrap; box-shadow:0 8px 20px -6px rgba(0,0,0,.4);
+}
+.toast.show{opacity:1; transform:translate(-50%,-6px);}
+
+/* ---------------- Profile ---------------- */
+.profile-hero{background:var(--navy-700); border-radius:0 0 26px 26px; padding:20px 20px 26px; color:#fff; position:relative;}
+.avatar{width:64px; height:64px; border-radius:50%; background:var(--sunset); display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:800; color:#fff; border:3px solid rgba(255,255,255,.4);}
+.stars{color:var(--gold-400); font-size:13px; letter-spacing:1px;}
+.menu-row{display:flex; align-items:center; gap:12px; padding:14px 4px; border-bottom:1px solid var(--line-soft); background:none; border-left:none; border-right:none; border-top:none; width:100%; text-align:left; font-size:14px; font-weight:600; color:var(--ink);}
+.menu-row .ic{width:34px; height:34px; border-radius:10px; background:var(--bg-dim); display:flex; align-items:center; justify-content:center; font-size:16px; flex:0 0 auto;}
+.menu-row .chev{margin-left:auto; color:var(--ink-faint);}
+
+/* ---------------- Messaging ---------------- */
+.msg{max-width:76%; padding:10px 13px; border-radius:16px; font-size:13.5px; line-height:1.4; margin-bottom:8px;}
+.msg.in{background:#fff; border:1px solid var(--line); border-bottom-left-radius:4px; align-self:flex-start;}
+.msg.out{background:var(--navy-700); color:#fff; border-bottom-right-radius:4px; align-self:flex-end;}
+.msg.offer{background:var(--sunset-soft); border:1px solid #FBD6A8; border-radius:14px; align-self:flex-start; max-width:82%;}
+.msg.offer.out{background:#EAF1FF; border-color:#CBDCFB; align-self:flex-end;}
+
+/* ---------------- Notification card ---------------- */
+.notif{display:flex; gap:12px; padding:13px 4px; border-bottom:1px solid var(--line-soft); align-items:flex-start;}
+.notif .ic{width:38px; height:38px; border-radius:50%; flex:0 0 auto; display:flex; align-items:center; justify-content:center; font-size:16px;}
+.notif.unread{background:linear-gradient(90deg, #FFF6EA, transparent 30%);}
+
+/* ================= ADMIN DASHBOARD ================= */
+.admin-wrap{width:100%; max-width:1180px; display:flex; gap:0; background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-card); min-height:760px;}
+.admin-sidebar{width:220px; flex:0 0 auto; background:var(--navy-900); color:#fff; padding:22px 14px; display:flex; flex-direction:column; gap:2px;}
+.admin-sidebar .abrand{display:flex; align-items:center; gap:9px; padding:0 8px 20px; border-bottom:1px solid rgba(255,255,255,.1); margin-bottom:14px;}
+.admin-sidebar .abrand img{height:24px;}
+.admin-sidebar .abrand span{font-family:var(--font-display); font-weight:700; font-size:15px;}
+.anavitem{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; color:rgba(255,255,255,.65); font-size:13.5px; font-weight:600; border:none; background:none; text-align:left; width:100%;}
+.anavitem.on{background:rgba(255,255,255,.1); color:#fff;}
+.anavitem .dot{width:6px; height:6px; border-radius:50%; background:var(--orange-500); margin-left:auto; display:none;}
+.anavitem.on .dot{display:block;}
+.admin-main{flex:1; min-width:0; padding:26px 30px; overflow-y:auto; max-height:900px;}
+.admin-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:22px;}
+.admin-header h2{font-size:22px;}
+.admin-header p{font-size:13px; color:var(--ink-faint); margin-top:3px;}
+.stat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:26px;}
+.stat-card{background:var(--bg-dim); border:1px solid var(--line); border-radius:14px; padding:16px;}
+.stat-card .n{font-family:var(--font-data); font-size:24px; font-weight:700; color:var(--navy-800);}
+.stat-card .l{font-size:12px; color:var(--ink-faint); font-weight:600; margin-top:3px;}
+.stat-card .d{font-size:10px; font-weight:800; margin-top:9px; display:inline-flex; align-items:center; gap:3px; letter-spacing:.04em; text-transform:uppercase; padding:3px 8px; border-radius:var(--radius-pill); border:1px dashed;}
+.d.up{color:var(--orange-600); border-color:#FBD6A8; background:#FFF8EE;} .d.warn{color:var(--orange-600); border-color:#FBD6A8; background:#FFF8EE;}
+.admin-table{width:100%; border-collapse:collapse; font-size:13px;}
+.admin-table th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); padding:10px 12px; border-bottom:1.5px solid var(--line);}
+.admin-table td{padding:12px; border-bottom:1px solid var(--line-soft); vertical-align:middle;}
+.admin-table tr:hover td{background:var(--bg-dim);}
+.a-pill{font-size:11px; font-weight:700; padding:4px 10px; border-radius:var(--radius-pill);}
+.a-panel{background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden;}
+.a-panel-head{display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid var(--line);}
+.a-tools{display:flex; gap:10px; margin-bottom:16px;}
+.a-tools input{flex:1; border:1.5px solid var(--line); border-radius:10px; padding:10px 14px; font-size:13px;}
+.a-tools select{border:1.5px solid var(--line); border-radius:10px; padding:10px 12px; font-size:13px; background:#fff;}
+
+/* Responsive */
+@media (max-width:1000px){
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .admin-wrap{flex-direction:column;}
+  .admin-sidebar{width:100%; flex-direction:row; overflow-x:auto; padding:12px;}
+  .admin-sidebar .abrand{display:none;}
+  .anavitem{width:auto; white-space:nowrap;}
+}
+@media (max-width:640px){
+  .demo-toolbar{flex-direction:column; align-items:stretch;}
+}
+</style>
+</head>
+<body>
+<div class="demo-shell">
+
+  <div class="demo-toolbar">
+    <div class="brand">
+      <img src="gonabor_logo.png" alt="GoNabor">
+      <div class="meta"><b>GoNabor Prototype</b><span>Interactive product demo · Zometrix Innovations</span></div>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div class="view-toggle">
+        <button id="tabMobileBtn" class="active" onclick="switchView('mobile')">📱 Mobile App</button>
+        <button id="tabAdminBtn" onclick="switchView('admin')">🖥️ Admin Dashboard</button>
+      </div>
+      <button class="reset-btn" onclick="resetDemo()">↺ Restart demo</button>
+    </div>
+  </div>
+
+  <!-- ================= MOBILE APP ================= -->
+  <div class="phone-wrap active" id="phoneWrap">
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="phone-screen">
+        <div class="statusbar">
+          <span>9:41</span>
+          <span class="icons">
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><rect x="0" y="6" width="3" height="5" rx="0.5" fill="#16233D"/><rect x="4.5" y="4" width="3" height="7" rx="0.5" fill="#16233D"/><rect x="9" y="2" width="3" height="9" rx="0.5" fill="#16233D"/><rect x="13" y="0" width="3" height="11" rx="0.5" fill="#16233D"/></svg>
+            <svg width="15" height="11" viewBox="0 0 24 16" fill="none"><path d="M12 4C7 4 3 7 1 9L12 16 23 9C21 7 17 4 12 4Z" fill="#16233D"/></svg>
+            <svg width="24" height="11" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="20" height="11" rx="2.5" stroke="#16233D"/><rect x="2" y="2" width="14" height="8" rx="1" fill="#16233D"/><rect x="22" y="4" width="2" height="4" rx="1" fill="#16233D"/></svg>
+          </span>
+        </div>
+        <div class="screen-area" id="screenArea"><!-- screens injected here --></div>
+        <div class="bottomnav" id="bottomNav"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ADMIN DASHBOARD ================= -->
+  <div class="admin-wrap" id="adminWrap" style="display:none;"></div>
+
+</div>
+
+<script>
+/* =====================================================================
+   GONABOR PROTOTYPE — APP LOGIC
+   ===================================================================== */
+
+/* ---------------- Icons (inline, stroke-based, consistent weight) ---------------- */
+const ICON = {
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>',
+  explore:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>',
+  chat:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 01-8.9 8.4A9 9 0 013 20l1.3-4A8.4 8.4 0 1121 11.5z"/></svg>',
+  user:'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>',
+  back:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#16233D" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+  bell:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16233D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0112 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M9.7 21a2.5 2.5 0 004.6 0"/></svg>',
+  heart:(f)=>`<svg width="15" height="15" viewBox="0 0 24 24" fill="${f?'#E85F0F':'none'}" stroke="${f?'#E85F0F':'#5B6B84'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg>`,
+  pin:'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#94A1B5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-7.2 7-12a7 7 0 10-14 0c0 4.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.4"/></svg>',
+  search:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>',
+  camera:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94A1B5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  chev:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A1B5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
+  smiley:'<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="url(#g1)"/><defs><linearGradient id="g1" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#F97316"/><stop offset="1" stop-color="#FBBF24"/></linearGradient></defs><circle cx="24" cy="27" r="3" fill="#16233D"/><circle cx="40" cy="27" r="3" fill="#16233D"/><path d="M21 37c2.5 5 8 8 11 8s8.5-3 11-8" stroke="#16233D" stroke-width="3" stroke-linecap="round" fill="none"/></svg>',
+};
+function icon(name,cls){return `<span class="i" style="display:inline-flex">${ICON[name]}</span>`;}
+
+/* ---------------- MOCK DATA ---------------- */
+const AREAS = ["East Legon","Adenta","Madina","Osu","Spintex","Tema","Dansoman","Achimota","Teshie","Legon"];
+
+const CATEGORIES = [
+  {id:'fashion', name:'Fashion', icon:'👕', color:'tc1'},
+  {id:'electronics', name:'Electronics', icon:'📱', color:'tc2'},
+  {id:'home', name:'Home & Living', icon:'🛋️', color:'tc3'},
+  {id:'books', name:'Books & Education', icon:'📚', color:'tc4'},
+  {id:'beauty', name:'Beauty & Care', icon:'💄', color:'tc5'},
+  {id:'stationery', name:'Stationery', icon:'✏️', color:'tc6'},
+  {id:'arts', name:'Arts & Creativity', icon:'🎨', color:'tc1'},
+  {id:'garden', name:'Garden & Plants', icon:'🪴', color:'tc3'},
+  {id:'other', name:'Other', icon:'📦', color:'tc2'},
+];
+
+const HARVEST_CATS = [
+  {id:'tomatoes', name:'Tomatoes', icon:'🍅'},
+  {id:'pepper', name:'Pepper', icon:'🌶️'},
+  {id:'vegetables', name:'Vegetables', icon:'🥬'},
+  {id:'herbs', name:'Herbs', icon:'🌿'},
+  {id:'fruits', name:'Fruits', icon:'🍌'},
+  {id:'seedlings', name:'Seedlings', icon:'🌱'},
+];
+
+const ME = {id:'u_michael', name:'Michael', initials:'M', location:'East Legon, Accra', rating:4.8, completed:15, verified:true, memberSince:'Prototype Account'};
+
+const USERS = {
+  u_ama:{id:'u_ama', name:"Ama", initials:'A', location:'Adenta, Accra', rating:4.8, completed:23, verified:true, gardenName:"Ama's Backyard Garden"},
+  u_kofi:{id:'u_kofi', name:'Kofi', initials:'K', location:'Madina, Accra', rating:4.6, completed:9, verified:true},
+  u_efua:{id:'u_efua', name:'Efua', initials:'E', location:'Osu, Accra', rating:4.9, completed:31, verified:true},
+  u_yaw:{id:'u_yaw', name:'Yaw', initials:'Y', location:'Tema Community 5', rating:4.4, completed:6, verified:false},
+  u_akosua:{id:'u_akosua', name:'Akosua', initials:'Ak', location:'Spintex, Accra', rating:4.7, completed:18, verified:true},
+};
+
+let LISTINGS = [
+  {id:'l1', sellerId:'u_michael', title:'Samsung Microwave', desc:'Samsung 25L microwave, good working condition. Selling because I upgraded. Slight scuff on the side, works perfectly.', category:'electronics', condition:'Good', price:350, priceType:'negotiable', listingType:'sell', location:'Adenta, Accra', distance:'2.1 km', status:'active', posted:'Just now', thumb:'📻', color:'tc2', img:'microwave'},
+  {id:'l2', sellerId:'u_kofi', title:'Samsung Galaxy A54', desc:'Barely used Galaxy A54, 128GB, comes with box and charger. Screen protector on since day one.', category:'electronics', condition:'Like New', price:1200, priceType:'fixed', listingType:'sell', location:'Adenta', distance:'2.1 km', status:'active', posted:'2 hours ago', thumb:'📱', color:'tc2', img:'phone'},
+  {id:'l3', sellerId:'u_efua', title:'Office Chair', desc:'Ergonomic mesh office chair, adjustable height. Great for home office setups.', category:'home', condition:'Good', price:150, priceType:'negotiable', listingType:'sell', location:'East Legon', distance:'1.2 km', status:'active', posted:'5 hours ago', thumb:'🪑', color:'tc1', img:'chair'},
+  {id:'l4', sellerId:'u_akosua', title:"Children's Story Books (Set of 12)", desc:'A lovely set of 12 illustrated story books, ages 4-8. My kids have outgrown them — hoping another family enjoys them.', category:'books', condition:'Good', price:0, priceType:'free', listingType:'give', location:'Madina', distance:'0.8 km', status:'active', posted:'1 day ago', thumb:'📚', color:'tc4', img:'books'},
+  {id:'l5', sellerId:'u_yaw', title:'Blender (Kenwood)', desc:"Kenwood blender, works well, just don't need it anymore.", category:'home', condition:'Fair', price:0, priceType:'free', listingType:'give', location:'Tema Community 5', distance:'6.4 km', status:'active', posted:'3 hours ago', thumb:'🥤', color:'tc3', img:'blender'},
+  {id:'l6', sellerId:'u_efua', title:'Leather Backpack', desc:'Genuine leather backpack, laptop compartment. Barely used.', category:'fashion', condition:'Like New', price:220, priceType:'fixed', listingType:'sell', location:'Osu', distance:'3.5 km', status:'active', posted:'1 day ago', thumb:'🎒', color:'tc1', img:'backpack'},
+  {id:'l7', sellerId:'u_kofi', title:'Wooden Dining Table (4-seater)', desc:'Solid wood dining table, minor scratches on top. Moving out, must go this week.', category:'home', condition:'Fair', price:450, priceType:'negotiable', listingType:'sell', location:'Madina', distance:'1.9 km', status:'active', posted:'6 hours ago', thumb:'🪵', color:'tc5', img:'table'},
+  {id:'l8', sellerId:'u_akosua', title:"Women's Sneakers (Size 39)", desc:'Nike sneakers, worn a handful of times, true to size.', category:'fashion', condition:'Like New', price:180, priceType:'fixed', listingType:'sell', location:'Spintex', distance:'4.0 km', status:'active', posted:'2 days ago', thumb:'👟', color:'tc6', img:'sneakers'},
+  {id:'l9', sellerId:'u_yaw', title:'Study Desk Lamp', desc:'LED desk lamp with 3 brightness settings. Giving it away, still works great.', category:'home', condition:'Good', price:0, priceType:'free', listingType:'give', location:'Tema', distance:'6.1 km', status:'active', posted:'4 hours ago', thumb:'💡', color:'tc6', img:'lamp'},
+  {id:'l10', sellerId:'u_efua', title:'Kitchen Utensil Set', desc:'Complete stainless steel kitchen set, 15 pieces. Duplicate gift, unused.', category:'home', condition:'New', price:90, priceType:'negotiable', listingType:'sell', location:'Osu', distance:'3.2 km', status:'active', posted:'8 hours ago', thumb:'🍳', color:'tc3', img:'utensils'},
+];
+
+let HARVEST = [
+  {id:'h1', gardenerId:'u_ama', produce:'Fresh Tomatoes', desc:'Fresh tomatoes harvested from my home garden this morning. Grown without pesticides.', category:'tomatoes', quantity:5, unit:'bowls', price:25, listingType:'sell', availability:'Available today', location:'Adenta, Accra', distance:'2.1 km', status:'active', posted:'Just now', icon:'🍅', img:'tomatoes'},
+  {id:'h2', gardenerId:'u_akosua', produce:'Garden Eggs', desc:'Locally grown garden eggs, perfect for stew. Picked fresh this week.', category:'vegetables', quantity:3, unit:'basket', price:15, listingType:'sell', availability:'Available now', location:'Spintex', distance:'4.0 km', status:'active', posted:'1 hour ago', icon:'🍆', img:'gardenEggs'},
+  {id:'h3', gardenerId:'u_efua', produce:'Kontomire (Cocoyam Leaves)', desc:'Fresh kontomire leaves from our backyard. More than we can use.', category:'vegetables', quantity:2, unit:'bunch', price:0, listingType:'give', availability:'Available today', location:'Osu', distance:'3.5 km', status:'active', posted:'3 hours ago', icon:'🥬', img:'kontomire'},
+  {id:'h4', gardenerId:'u_yaw', produce:'Basil & Mint Herbs', desc:'A mix of fresh basil and mint, great for cooking and tea.', category:'herbs', quantity:4, unit:'bunch', price:10, listingType:'sell', availability:'Available tomorrow', location:'Tema Community 5', distance:'6.4 km', status:'active', posted:'5 hours ago', icon:'🌿', img:'herbs'},
+  {id:'h5', gardenerId:'u_ama', produce:'Ripe Pawpaw (Papaya)', desc:'Sweet ripe pawpaw from our tree — three ready to eat now.', category:'fruits', quantity:3, unit:'piece', price:0, listingType:'give', availability:'Available now', location:'Adenta, Accra', distance:'2.1 km', status:'active', posted:'6 hours ago', icon:'🍈', img:'pawpaw'},
+  {id:'h6', gardenerId:'u_kofi', produce:'Scotch Bonnet Pepper', desc:'Spicy scotch bonnet peppers, home grown, good for shito and stews.', category:'pepper', quantity:2, unit:'kg', price:20, listingType:'sell', availability:'Available today', location:'Madina', distance:'1.9 km', status:'active', posted:'1 day ago', icon:'🌶️', img:'pepper'},
+];
+
+let OFFERS = [
+  {id:'o1', listingId:'l1', buyerId:'u_kofi', sellerId:'u_michael', amount:300, message:'Would you accept GH₵300 for this?', status:'pending', createdAt:'20m ago'},
+]; // {id, listingId, buyerId, sellerId, amount, message, status, createdAt}
+let notifId = 1;
+let NOTIFICATIONS = [
+  {id:'n1', type:'offer', text:'Kofi Mensah made an offer of GH₵300 on your listing "Samsung Microwave"', time:'20m ago', unread:true},
+  {id:'n2', type:'message', text:'Kofi replied to your message about "Samsung Galaxy A54"', time:'2h ago', unread:true},
+  {id:'n3', type:'status', text:'Your listing "Wooden Dining Table" is getting a lot of views', time:'1d ago', unread:false},
+];
+
+let SAVED = new Set(['l3','h1']);
+
+let CONVERSATIONS = [
+  {id:'c0', withId:'u_kofi', listingId:'l1', lastMsg:'Offered GH₵300', time:'20m ago', unread:true,
+   thread:[{from:'them', text:'Hi, is the microwave still available?'},{from:'me', text:'Yes, still available!'},{from:'them', type:'offer', amount:300, text:'Would you accept GH₵300 for this?'}]},
+  {id:'c1', withId:'u_kofi', listingId:'l2', lastMsg:"Yes, it is! Still in great condition.", time:'2h ago', unread:true,
+   thread:[{from:'me', text:'Hi, is this still available?'},{from:'them', text:'Yes, it is! Still in great condition.'}]},
+  {id:'c2', withId:'u_efua', listingId:'l3', lastMsg:"Deal, I'll take it!", time:'1d ago', unread:false,
+   thread:[{from:'me', text:'Would you accept GH₵130 for the chair?'},{from:'them', text:"I can do GH₵140, it's barely used."},{from:'me', text:"Deal, I'll take it!"}]},
+];
+
+/* ---------------- STATE ---------------- */
+let state = {
+  view:'mobile',
+  screen:'splash',
+  stack:[],
+  activeTab:'home',
+  location:'East Legon, Accra',
+  exploreTab:'all',
+  productId:null,
+  harvestId:null,
+  postFlow:null,       // 'sell' | 'give' | 'harvest'
+  postStep:1,
+  postData:{},
+  chatId:null,
+  offerContext:null,
+  adminSection:'dashboard',
+};
+
+function fmtMoney(n){ return 'GH₵' + Number(n).toLocaleString(); }
+/* Real product/food photography (Pexels, free-to-use license). Mapped by short keys. */
+const PHOTO_ID = {
+  microwave:4686822, phone:3747132, chair:5483245, books:159866, blender:7937006,
+  backpack:1314058, table:3968056, sneakers:2529148, lamp:1112598, utensils:12292644,
+  tomatoes:162830, gardenEggs:321551, kontomire:2095569, herbs:1391503, pawpaw:4113833,
+  pepper:10899602, boxFallback:5957128,
+};
+function photoUrl(key, w){
+  const id = PHOTO_ID[key] || PHOTO_ID.boxFallback;
+  return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w||600}`;
+}
+/* Category fallback photo for listings the user creates during the demo (no dedicated photo yet). */
+const CATEGORY_PHOTO = {
+  fashion:'sneakers', electronics:'phone', home:'table', books:'books', beauty:'utensils',
+  stationery:'books', arts:'utensils', garden:'kontomire', other:'boxFallback',
+};
+function categoryPhotoKey(cat){ return CATEGORY_PHOTO[cat] || 'boxFallback'; }
+const HARVEST_CATEGORY_PHOTO = {
+  tomatoes:'tomatoes', pepper:'pepper', vegetables:'gardenEggs', herbs:'herbs', fruits:'pawpaw', seedlings:'kontomire', other:'boxFallback',
+};
+function harvestCategoryPhotoKey(cat){ return HARVEST_CATEGORY_PHOTO[cat] || 'tomatoes'; }
+function pushNotification(type, text){
+  NOTIFICATIONS.unshift({id:'n'+(notifId++), type, text, time:'Just now', unread:true});
+}
+function unreadNotifCount(){ return NOTIFICATIONS.filter(n=>n.unread).length; }
+function notifDot(){
+  const n = unreadNotifCount();
+  if(!n) return '';
+  return `<span style="position:absolute; top:3px; right:4px; min-width:16px; height:16px; padding:0 4px; background:var(--orange-500); border-radius:10px; color:#fff; font-size:9.5px; font-weight:800; display:flex; align-items:center; justify-content:center; border:2px solid #fff;">${n>9?'9+':n}</span>`;
+}
+function starRow(rating){
+  const full = Math.round(rating);
+  return `<span class="stars">${'★'.repeat(full)}${'☆'.repeat(5-full)}</span> <b style="font-size:12.5px;color:var(--ink)">${rating.toFixed(1)}</b>`;
+}
+function initialsAvatar(u, size=40, fontSize=15){
+  return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:var(--sunset);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:${fontSize}px;flex:0 0 auto;">${u.initials}</div>`;
+}
+/* ---------------- NAVIGATION ENGINE ---------------- */
+function go(screen, opts={}){
+  if(state.screen && state.screen!=='splash'){ state.stack.push(state.screen); }
+  Object.assign(state, opts);
+  state.screen = screen;
+  render();
+  const area = document.getElementById('screenArea');
+  if(area) area.scrollTop = 0;
+}
+function replace(screen, opts={}){
+  Object.assign(state, opts);
+  state.screen = screen;
+  render();
+}
+function back(){
+  const prev = state.stack.pop();
+  if(prev){ state.screen = prev; render(); }
+  else { state.screen='home'; state.activeTab='home'; render(); }
+}
+function setTab(tab){
+  state.activeTab = tab;
+  state.stack = [];
+  const map = {home:'home', explore:'explore', messages:'messages', profile:'profile'};
+  state.screen = map[tab] || 'home';
+  render();
+}
+
+function toast(msg){
+  const scr = document.querySelector('.phone-screen');
+  let t = scr.querySelector('.toast');
+  if(!t){ t=document.createElement('div'); t.className='toast'; scr.appendChild(t); }
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+function openSheet(html, opts={}){
+  closeSheet();
+  const scr = document.querySelector('.phone-screen');
+  const ov = document.createElement('div');
+  ov.className = 'overlay show' + (opts.center? ' center':'');
+  ov.id = 'activeOverlay';
+  ov.innerHTML = opts.center
+    ? `<div class="modal">${html}</div>`
+    : `<div class="sheet"><div class="grabber"></div>${html}</div>`;
+  ov.addEventListener('click', (e)=>{ if(e.target===ov) closeSheet(); });
+  scr.appendChild(ov);
+}
+function closeSheet(){
+  const ov = document.getElementById('activeOverlay');
+  if(ov) ov.remove();
+}
+
+/* ---------------- BOTTOM NAV ---------------- */
+function renderBottomNav(){
+  const nav = document.getElementById('bottomNav');
+  if(!nav) return;
+  if(['splash','onboarding','auth','otp','location'].includes(state.screen)){ nav.style.display='none'; return; }
+  nav.style.display='flex';
+  const t = state.activeTab;
+  nav.innerHTML = `
+    <button class="navitem ${t==='home'?'on':''}" onclick="setTab('home')">${ICON.home}<span>Home</span></button>
+    <button class="navitem ${t==='explore'?'on':''}" onclick="setTab('explore')">${ICON.explore}<span>Explore</span></button>
+    <button class="navitem" onclick="openPostHub()"><span class="postbtn">${ICON.plus}</span></button>
+    <button class="navitem ${t==='messages'?'on':''}" onclick="setTab('messages')">${ICON.chat}<span>Messages</span></button>
+    <button class="navitem ${t==='profile'?'on':''}" onclick="setTab('profile')">${ICON.user}<span>Profile</span></button>
+  `;
+}
+
+function topbar(title, opts={}){
+  return `<div class="topbar">
+    ${opts.noback? '<div style="width:34px"></div>' : `<button class="back" onclick="${opts.backFn||'back()'}" aria-label="Go back">${ICON.back}</button>`}
+    <h1>${title}</h1>
+    ${opts.action? opts.action : '<div style="width:34px"></div>'}
+  </div>`;
+}
+
+/* ---------------- MASTER RENDER ---------------- */
+const SCREENS = {};
+function render(){
+  renderBottomNav();
+  const area = document.getElementById('screenArea');
+  if(!area) return;
+  const fn = SCREENS[state.screen] || SCREENS.home;
+  area.innerHTML = `<div class="screen">${fn()}</div>`;
+}
+/* ================= SPLASH ================= */
+SCREENS.splash = () => `
+  <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; background:radial-gradient(circle at 50% 30%, #fff, var(--bg) 70%); padding:0 30px; text-align:center;">
+    <img src="gonabor_logo.png" alt="GoNabor" style="width:220px;">
+    <p style="font-family:var(--font-display); font-size:15px; color:var(--ink-soft); margin:0; font-weight:600;">Useful Things. Near You.</p>
+    <div style="position:absolute; bottom:38px; display:flex; flex-direction:column; align-items:center; gap:10px;">
+      <div style="width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--orange-500);border-radius:50%; animation:spin 0.9s linear infinite;"></div>
+      <span style="font-size:11.5px; color:var(--ink-faint); font-weight:600;">Powered by Zometrix Innovations</span>
+    </div>
+  </div>
+  <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+`;
+
+/* ================= ONBOARDING ================= */
+const ONBOARD = [
+  {emoji:'📍', title:'Find useful things nearby.', sub:'Discover things people around you are giving away or selling.'},
+  {emoji:'🤝', title:'Give or sell what you no longer need.', sub:'Turn unused things into value — or simply give them a new home.'},
+  {emoji:'🌱', title:'Share your harvest.', sub:'Growing more than you need? Sell or give away your excess harvest to people nearby.'},
+];
+state.onboardIdx = 0;
+SCREENS.onboarding = () => {
+  const i = state.onboardIdx||0;
+  const s = ONBOARD[i];
+  return `
+  <div style="flex:1; display:flex; flex-direction:column; padding:26px 26px 20px;">
+    <div style="text-align:right;"><button class="btn-ghost" style="width:auto;padding:6px 4px;" onclick="skipOnboard()">Skip</button></div>
+    <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px; text-align:center;">
+      <div style="width:120px;height:120px;border-radius:34px; background:var(--sunset-soft); display:flex; align-items:center; justify-content:center; font-size:52px;">${s.emoji}</div>
+      <div>
+        <h2 style="font-size:22px; margin-bottom:10px; line-height:1.25;">${s.title}</h2>
+        <p class="muted" style="font-size:14px; line-height:1.5; max-width:270px;">${s.sub}</p>
+      </div>
+    </div>
+    <div style="display:flex; justify-content:center; gap:6px; margin-bottom:22px;">
+      ${ONBOARD.map((_,idx)=>`<i style="width:${idx===i?20:7}px;height:7px;border-radius:4px;background:${idx===i?'var(--orange-500)':'var(--line)'}; transition:.2s;"></i>`).join('')}
+    </div>
+    <button class="btn btn-sunset" onclick="nextOnboard()">${i===ONBOARD.length-1? 'Get Started' : 'Next'}</button>
+  </div>`;
+};
+function nextOnboard(){
+  if((state.onboardIdx||0) < ONBOARD.length-1){ state.onboardIdx=(state.onboardIdx||0)+1; render(); }
+  else go('auth');
+}
+function skipOnboard(){ go('auth'); }
+
+/* ================= SIGN UP / LOGIN + PHONE VERIFICATION ================= */
+state.phone = '';
+state.otpDigits = '';
+SCREENS.auth = () => `
+  <div style="flex:1; display:flex; flex-direction:column; padding:34px 26px;">
+    <div style="text-align:center; margin-bottom:26px;">
+      <img src="gonabor_logo.png" style="width:120px; margin:0 auto 18px;">
+      <h2 style="font-size:20px; margin-bottom:8px;">Join GoNabor</h2>
+      <p class="muted" style="font-size:13.5px;">Sign up or log in with your phone number.</p>
+    </div>
+    <div class="field">
+      <label>Phone Number</label>
+      <div style="display:flex; gap:8px;">
+        <div style="border:1.5px solid var(--line); border-radius:var(--radius-sm); padding:13px 12px; font-size:14.5px; font-weight:700; color:var(--ink-soft); background:#fff;">🇬🇭 +233</div>
+        <input type="tel" id="f_phone" placeholder="24 123 4567" value="${state.phone}" style="flex:1; border:1.5px solid var(--line); border-radius:var(--radius-sm); padding:13px 14px; font-size:14.5px; outline:none;">
+      </div>
+    </div>
+    <p class="faint" style="font-size:11.5px; margin-bottom:18px;">We'll text you a one-time code to verify it's really you. One account can buy, sell, give and garden — no separate accounts needed.</p>
+    <button class="btn btn-sunset" onclick="submitPhone()">Continue</button>
+    <button class="btn btn-ghost" style="margin-top:6px;" onclick="go('location')">Skip for now</button>
+  </div>
+`;
+function submitPhone(){
+  const val = document.getElementById('f_phone').value.trim();
+  if(!val){ toast('Enter your phone number'); return; }
+  state.phone = val;
+  go('otp');
+}
+SCREENS.otp = () => `
+  ${topbar('Verify Number')}
+  <div style="flex:1; display:flex; flex-direction:column; padding:14px 26px;">
+    <div style="text-align:center; margin-bottom:26px;">
+      <div style="width:60px;height:60px;border-radius:50%;background:var(--sunset);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 16px;">🔐</div>
+      <h2 style="font-size:19px; margin-bottom:8px;">Enter the code</h2>
+      <p class="muted" style="font-size:13.5px;">We sent a 4-digit code to +233 ${state.phone||'•• ••• ••••'}</p>
+    </div>
+    <div style="display:flex; gap:10px; justify-content:center; margin-bottom:20px;">
+      ${[0,1,2,3].map(i=>`<input maxlength="1" inputmode="numeric" class="otpbox" style="width:52px; height:58px; text-align:center; font-size:22px; font-weight:800; border:1.5px solid var(--line); border-radius:var(--radius-sm); outline:none;" oninput="if(this.value){const n=this.nextElementSibling; if(n&&n.classList.contains('otpbox')) n.focus();}">`).join('')}
+    </div>
+    <button class="btn btn-sunset" style="margin-bottom:10px;" onclick="verifyOtp()">Verify & Continue</button>
+    <button class="btn btn-ghost" onclick="toast('New code sent')">Resend Code</button>
+  </div>
+`;
+function verifyOtp(){
+  toast('✓ Phone verified');
+  go('location');
+}
+
+
+/* ================= LOCATION ================= */
+SCREENS.location = () => `
+  <div style="flex:1; display:flex; flex-direction:column; padding:34px 26px;">
+    <div style="text-align:center; margin-bottom:30px;">
+      <div style="width:64px;height:64px;border-radius:50%;background:var(--sunset);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px;">📍</div>
+      <h2 style="font-size:21px; margin-bottom:8px;">What's your area?</h2>
+      <p class="muted" style="font-size:13.5px;">We'll use your area to show you useful things near you.</p>
+    </div>
+    <button class="btn btn-primary" style="margin-bottom:12px;" onclick="chooseLocation('East Legon, Accra')">📡 Use My Current Location</button>
+    <button class="btn btn-outline-soft" style="margin-bottom:22px;" onclick="openAreaPicker()">Choose Location Manually</button>
+    <div class="eyebrow" style="margin-bottom:10px;">Popular areas</div>
+    <div class="chipwrap">
+      ${AREAS.map(a=>`<button class="chip" onclick="chooseLocation('${a}, Accra')">${a}</button>`).join('')}
+    </div>
+  </div>
+`;
+function chooseLocation(loc){
+  state.location = loc;
+  toast('Location set to ' + loc.split(',')[0]);
+  go('home', {activeTab:'home', screen:'home', stack:[]});
+}
+function openAreaPicker(){
+  openSheet(`<h3>Choose your area</h3>
+    <div style="display:flex;flex-direction:column;gap:2px;max-height:320px;overflow:auto;">
+      ${AREAS.map(a=>`<button class="menu-row" onclick="closeSheet(); chooseLocation('${a}, Accra')"><span class="ic">📍</span>${a}<span class="chev" style="margin-left:auto;">${ICON.chev}</span></button>`).join('')}
+    </div>`);
+}
+/* ================= PRODUCT CARD renderer ================= */
+function productCard(l){
+  const priceHtml = l.priceType==='free' ? `<span class="price free">FREE</span>` : `<span class="price">${fmtMoney(l.price)}</span>`;
+  const saved = SAVED.has(l.id);
+  const imgKey = l.img || categoryPhotoKey(l.category);
+  return `
+  <div class="pcard" role="button" tabindex="0" style="text-align:left; cursor:pointer;" onclick="go('product',{productId:'${l.id}'})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); this.click();}">
+    <div class="thumb thumb-photo" style="background-image:url('${photoUrl(imgKey,500)}');">
+      <button class="save" onclick="event.stopPropagation(); toggleSave('${l.id}')" aria-label="Save listing">${ICON.heart(saved)}</button>
+    </div>
+    <div class="body">
+      <div class="title">${l.title}</div>
+      <div class="meta-row">
+        ${priceHtml}
+        ${l.priceType==='negotiable'?'<span class="badge badge-negotiable">Negotiable</span>':''}
+      </div>
+      <div class="loc">${ICON.pin} ${l.location} · ${l.distance}</div>
+    </div>
+  </div>`;
+}
+function harvestCard(h){
+  const priceHtml = h.listingType==='give' ? `<span class="price free">FREE</span>` : `<span class="price">${fmtMoney(h.price)}/${h.unit}</span>`;
+  const saved = SAVED.has(h.id);
+  const statusBadge = h.status!=='active' ? `<span class="badge badge-status-${h.status}" style="margin-bottom:4px; display:inline-block;">${h.status.toUpperCase()}</span>` : '';
+  const imgKey = h.img || 'tomatoes';
+  return `
+  <div class="pcard" role="button" tabindex="0" style="text-align:left; cursor:pointer;" onclick="go('harvest',{harvestId:'${h.id}'})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); this.click();}">
+    <div class="thumb thumb-photo" style="background-image:url('${photoUrl(imgKey,500)}');">
+      <button class="save" onclick="event.stopPropagation(); toggleSave('${h.id}')" aria-label="Save">${ICON.heart(saved)}</button>
+      <span style="position:absolute; left:7px; top:7px; font-size:9px; font-weight:800; background:var(--sunset); color:#fff; padding:3px 7px; border-radius:20px;">HARVEST</span>
+    </div>
+    <div class="body">
+      ${statusBadge}
+      <div class="title">${h.produce}</div>
+      <div class="faint" style="font-size:10.5px; margin:-2px 0 3px;">${h.quantity} ${h.unit} · ${h.availability}</div>
+      <div class="meta-row">${priceHtml}</div>
+      <div class="loc">${ICON.pin} ${h.location} · ${h.distance}</div>
+    </div>
+  </div>`;
+}
+function toggleSave(id){
+  if(SAVED.has(id)) SAVED.delete(id); else SAVED.add(id);
+  render();
+  toast(SAVED.has(id) ? 'Saved to your list' : 'Removed from saved');
+}
+
+/* ================= HOME ================= */
+SCREENS.home = () => {
+  const nearby = LISTINGS.filter(l=>l.status==='active').slice(0,4);
+  const free = LISTINGS.filter(l=>l.priceType==='free' && l.status==='active');
+  const harvestNear = HARVEST.filter(h=>h.status==='active').slice(0,4);
+  return `
+  <div style="padding:14px 18px 90px;">
+    <div style="display:flex; align-items:center; justify-content:between; gap:10px; margin-bottom:4px;">
+      <div style="flex:1;">
+        <div style="font-family:var(--font-display); font-size:20px; color:var(--navy-800); font-weight:700; line-height:1;">GoNabor</div>
+        <button onclick="go('locationEdit')" style="border:none;background:none;padding:0; display:flex; align-items:center; gap:4px; font-size:12px; color:var(--ink-soft); font-weight:600; margin-top:4px;">${ICON.pin} ${state.location} ${ICON.chev}</button>
+      </div>
+      <button class="topbar action" onclick="go('notifications')" style="position:relative;" aria-label="Notifications">${ICON.bell}${notifDot()}</button>
+    </div>
+    <p class="faint" style="font-size:11.5px; font-weight:700; letter-spacing:.01em; margin:2px 0 14px;">Useful Things. Near You.</p>
+
+    <button class="searchbar" style="width:100%; margin-bottom:18px;" onclick="go('explore',{activeTab:'explore', exploreFocus:true})" aria-label="Search">
+      ${ICON.search}<span style="color:var(--ink-faint); font-size:14px;">What are you looking for?</span>
+    </button>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+      <button class="card pad" style="text-align:left; border-color:#CDECD5;" onclick="startPostFlow('give')">
+        <div style="width:38px;height:38px;border-radius:12px; background:var(--green-100); display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:10px;">🎁</div>
+        <div style="font-weight:800; font-size:14px; color:var(--navy-800);">GIVE</div>
+        <div class="faint" style="font-size:11px; margin-top:2px; line-height:1.35;">Give something a new home.</div>
+      </button>
+      <button class="card pad" style="text-align:left;" onclick="startPostFlow('sell')">
+        <div style="width:38px;height:38px;border-radius:12px; background:#FFF3E2; display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:10px;">💰</div>
+        <div style="font-weight:800; font-size:14px; color:var(--navy-800);">SELL</div>
+        <div class="faint" style="font-size:11px; margin-top:2px; line-height:1.35;">Turn unused things into money.</div>
+      </button>
+    </div>
+
+    <button class="harvest-feature" style="margin-bottom:24px; width:100%; text-align:left; display:block;" onclick="go('harvestHome',{activeTab:'home'})">
+      <div class="eyebrow" style="color:#fff; opacity:.9;">🌱 HOME HARVEST</div>
+      <h2>Fresh from gardens near you.</h2>
+      <p>Got more than you can use? Sell or share your excess harvest with people nearby.</p>
+      <span class="cta" style="pointer-events:none;">Explore Home Harvest →</span>
+    </button>
+
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+      <h3 style="font-size:16px;">📍 Near You</h3>
+      <button class="btn-ghost" style="width:auto; padding:0; font-size:12.5px; font-weight:700; color:var(--navy-700);" onclick="go('explore',{activeTab:'explore', exploreTab:'nearby'})">See all</button>
+    </div>
+    ${nearby.length ? `<div class="grid2" style="margin-bottom:22px;">${nearby.map(productCard).join('')}</div>` : `<div style="margin-bottom:22px;">${emptyState('📍',"Nothing nearby yet","We couldn't find anything nearby yet. Try expanding your search area.")}</div>`}
+
+    <div class="card pad" style="margin-bottom:22px; background:var(--green-100); border-color:#CDECD5;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:2px;">
+        <h3 style="font-size:15px; color:var(--green-700);">🎁 Free Near You</h3>
+        <button class="btn-ghost" style="width:auto; padding:0; font-size:12px; font-weight:700; color:var(--green-700);" onclick="go('explore',{activeTab:'explore', exploreTab:'free'})">See all</button>
+      </div>
+      <p style="font-size:12px; color:var(--green-700); opacity:.85; margin:0 0 12px;">Good things looking for a new home.</p>
+      ${free.length ? `<div style="display:flex; gap:10px; overflow-x:auto;">
+        ${free.map(l=>`
+          <button onclick="go('product',{productId:'${l.id}'})" style="flex:0 0 140px; background:#fff; border-radius:14px; border:1px solid #CDECD5; padding:10px; text-align:left;">
+            <div style="height:70px;border-radius:10px; background-image:url('${photoUrl(l.img||categoryPhotoKey(l.category),300)}'); background-size:cover; background-position:center; margin-bottom:8px;"></div>
+            <div style="font-size:12px; font-weight:700; margin-bottom:3px; height:30px; overflow:hidden;">${l.title}</div>
+            <span class="badge badge-free">FREE</span>
+          </button>`).join('')}
+      </div>` : `<p class="faint" style="font-size:12px; margin:0;">Nothing free nearby right now — check back soon.</p>`}
+    </div>
+
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+      <h3 style="font-size:16px;">🌱 Home Harvest Near You</h3>
+      <button class="btn-ghost" style="width:auto; padding:0; font-size:12.5px; font-weight:700; color:var(--navy-700);" onclick="go('harvestHome',{activeTab:'home'})">See all</button>
+    </div>
+    ${harvestNear.length ? `<div class="grid2" style="margin-bottom:26px;">${harvestNear.map(harvestCard).join('')}</div>` :
+      `<div style="margin-bottom:26px;">${emptyState('🌱','No harvest listings nearby yet','Check back soon—or be the first gardener to post.')}</div>`}
+
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+      <h3 style="font-size:16px;">Browse Categories</h3>
+    </div>
+    <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:6px;">
+      ${CATEGORIES.map(c=>`
+        <button onclick="go('explore',{activeTab:'explore', exploreCategory:'${c.id}'})" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:none; border:none; width:64px;">
+          <div class="${c.color}" style="width:52px;height:52px;border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:22px;">${c.icon}</div>
+          <span style="font-size:10.5px; font-weight:700; color:var(--ink-soft); text-align:center; line-height:1.2;">${c.name}</span>
+        </button>`).join('')}
+    </div>
+  </div>`;
+};
+SCREENS.locationEdit = () => `
+  ${topbar('Change area')}
+  <div style="padding:6px 18px 30px;">
+    <p class="muted" style="font-size:13px; margin-bottom:16px;">Choosing a new area updates what's shown as "near you." Your exact address is never shown publicly.</p>
+    <div style="display:flex;flex-direction:column;gap:2px;">
+      ${AREAS.map(a=>`<button class="menu-row" onclick="chooseLocation('${a}, Accra'); back();"><span class="ic">📍</span>${a}, Accra<span class="chev" style="margin-left:auto;">${ICON.chev}</span></button>`).join('')}
+    </div>
+  </div>
+`;
+/* ================= EXPLORE ================= */
+state.exploreMap = false;
+function distKm(item){ return parseFloat(item.distance) || 0; }
+const NEARBY_RADIUS_KM = 4;
+state.filters = {distance:'Any', price:'Any', condition:'Any', negotiable:'Any'};
+function passesFilters(item, isHarvest){
+  const f = state.filters || {};
+  if(f.distance && f.distance!=='Any'){
+    const maxKm = f.distance==='<2km'?2 : f.distance==='<5km'?5 : f.distance==='<10km'?10 : Infinity;
+    if(distKm(item) > maxKm) return false;
+  }
+  if(f.price && f.price!=='Any'){
+    const isFree = isHarvest ? item.listingType==='give' : item.priceType==='free';
+    const price = item.price||0;
+    if(f.price==='Free only' && !isFree) return false;
+    if(f.price==='Under GH₵100' && (isFree || price>=100)) return false;
+    if(f.price==='Under GH₵500' && (isFree || price>=500)) return false;
+  }
+  if(!isHarvest && f.condition && f.condition!=='Any' && item.condition!==f.condition) return false;
+  if(!isHarvest && f.negotiable && f.negotiable!=='Any'){
+    if(f.negotiable==='Negotiable only' && item.priceType!=='negotiable') return false;
+    if(f.negotiable==='Fixed price only' && item.priceType!=='fixed') return false;
+  }
+  return true;
+}
+function applySortMode(arr, mode){
+  const copy = arr.slice();
+  if(mode==='Nearest') copy.sort((a,b)=>distKm(a)-distKm(b));
+  else if(mode==='Lowest Price') copy.sort((a,b)=>(a.price||0)-(b.price||0));
+  // 'Newest' and 'Recommended' keep existing order (newly-published items are already unshifted to the front)
+  return copy;
+}
+function getExploreResults(tab){
+  const cat = state.exploreCategory || null;
+  let results = [], harvestResults = [];
+  if(tab==='harvest'){
+    harvestResults = HARVEST.filter(h=>{
+      if(state.exploreQuery && !h.produce.toLowerCase().includes(state.exploreQuery.toLowerCase())) return false;
+      if(tab==='nearby' && distKm(h) > NEARBY_RADIUS_KM) return false;
+      return passesFilters(h, true);
+    });
+    let mode = state.sortBy || 'Recommended';
+    harvestResults = applySortMode(harvestResults, mode);
+  } else {
+    results = LISTINGS.filter(l=>{
+      if(tab==='sale' && l.priceType==='free') return false;
+      if(tab==='free' && l.priceType!=='free') return false;
+      if(tab==='nearby' && distKm(l) > NEARBY_RADIUS_KM) return false;
+      if(cat && l.category!==cat) return false;
+      if(state.exploreQuery){
+        const q = state.exploreQuery.toLowerCase();
+        if(!l.title.toLowerCase().includes(q) && !l.category.includes(q)) return false;
+      }
+      return passesFilters(l, false);
+    });
+    let mode = state.sortBy || 'Recommended';
+    if(tab==='nearby' && mode==='Recommended') mode = 'Nearest';
+    results = applySortMode(results, mode);
+  }
+  return {results, harvestResults};
+}
+SCREENS.explore = () => {
+  const tab = state.exploreTab || 'all';
+  const {results, harvestResults} = getExploreResults(tab);
+  const tabs = [
+    {id:'all', label:'All'}, {id:'sale', label:'For Sale'}, {id:'free', label:'Free'},
+    {id:'harvest', label:'🌱 Home Harvest'}, {id:'nearby', label:'Nearby'},
+  ];
+  return `
+  <div style="padding:14px 18px 90px;">
+    <h1 style="font-size:20px; margin-bottom:12px;">Explore</h1>
+    <div class="searchbar" style="margin-bottom:12px;">
+      ${ICON.search}
+      <input placeholder="Search for anything..." value="${state.exploreQuery||''}" oninput="state.exploreQuery=this.value; renderExploreResults();">
+    </div>
+    <div class="tabs" style="margin-bottom:12px;">
+      ${tabs.map(t=>`<button class="tab ${tab===t.id?'on':''} ${t.id==='harvest'&&tab==='harvest'?'harvest':''}" onclick="state.exploreTab='${t.id}'; render();">${t.label}</button>`).join('')}
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+      <button class="chip" style="font-size:12px; padding:8px 12px;" onclick="openFilters()">⚙️ Filters${activeFilterCount()?` (${activeFilterCount()})`:''}</button>
+      <button class="chip" style="font-size:12px; padding:8px 12px;" onclick="openSortSheet()">↕ Sort: ${state.sortBy||'Recommended'}</button>
+      <div style="margin-left:auto; display:flex; background:#fff; border:1.5px solid var(--line); border-radius:var(--radius-pill); padding:3px;">
+        <button onclick="state.exploreMap=false; render();" style="border:none;background:${!state.exploreMap?'var(--navy-700)':'transparent'}; color:${!state.exploreMap?'#fff':'var(--ink-soft)'}; font-size:11px; font-weight:700; padding:6px 10px; border-radius:20px;">List</button>
+        <button onclick="state.exploreMap=true; render();" style="border:none;background:${state.exploreMap?'var(--navy-700)':'transparent'}; color:${state.exploreMap?'#fff':'var(--ink-soft)'}; font-size:11px; font-weight:700; padding:6px 10px; border-radius:20px;">Map</button>
+      </div>
+    </div>
+    <div id="exploreResults">
+      ${renderExploreResultsHtml(tab, results, harvestResults)}
+    </div>
+  </div>`;
+};
+function activeFilterCount(){
+  const f = state.filters || {};
+  return Object.values(f).filter(v=>v && v!=='Any').length;
+}
+function renderExploreResultsHtml(tab, results, harvestResults){
+  if(state.exploreMap){
+    return mapPlaceholder(tab==='harvest'? harvestResults.length : results.length);
+  }
+  if(tab==='harvest'){
+    if(!harvestResults.length) return emptyState('🌱','No harvest listings nearby yet','Check back soon—or be the first gardener to post. Try adjusting your filters.');
+    return `<div class="grid2">${harvestResults.map(harvestCard).join('')}</div>`;
+  }
+  if(!results.length) return emptyState('🔍',"We couldn't find anything nearby yet","Try expanding your search area, adjusting filters, or a different search term.");
+  return `<div class="grid2">${results.map(productCard).join('')}</div>`;
+}
+function renderExploreResults(){
+  const tab = state.exploreTab || 'all';
+  const {results, harvestResults} = getExploreResults(tab);
+  document.getElementById('exploreResults').innerHTML = renderExploreResultsHtml(tab, results, harvestResults);
+}
+function mapPlaceholder(count){
+  return `
+  <div style="border-radius:16px; overflow:hidden; border:1px solid var(--line); position:relative; height:320px; background:
+    linear-gradient(0deg, rgba(233,238,246,.4), rgba(233,238,246,.4)),
+    repeating-linear-gradient(0deg, #EEF2F8, #EEF2F8 22px, #E4EAF3 23px),
+    repeating-linear-gradient(90deg, #EEF2F8, #EEF2F8 22px, #E4EAF3 23px);">
+    ${[...Array(Math.min(count,6))].map((_,i)=>`<div style="position:absolute; left:${15+ (i*47)%75}%; top:${20+(i*63)%65}%; width:30px; height:30px; border-radius:50% 50% 50% 0; background:var(--sunset); transform:rotate(-45deg); box-shadow:0 4px 10px rgba(0,0,0,.2);"></div>`).join('')}
+    <div style="position:absolute; bottom:10px; left:10px; background:#fff; padding:6px 12px; border-radius:20px; font-size:11px; font-weight:700; box-shadow:var(--shadow-card);">📍 Showing approximate locations</div>
+  </div>`;
+}
+function setExploreFilter(key, val){
+  state.filters = state.filters || {distance:'Any', price:'Any', condition:'Any', negotiable:'Any'};
+  state.filters[key] = val;
+  openFilters();
+}
+function openFilters(){
+  const f = state.filters || {distance:'Any', price:'Any', condition:'Any', negotiable:'Any'};
+  const chip = (key, val, label) => `<button class="chip ${f[key]===val?'on':''}" onclick="setExploreFilter('${key}','${val}')">${label}</button>`;
+  openSheet(`<h3>Filters</h3>
+    <div class="field"><label>Distance</label>
+      <div class="chipwrap">${chip('distance','Any','Any')}${chip('distance','<2km','&lt; 2 km')}${chip('distance','<5km','&lt; 5 km')}${chip('distance','<10km','&lt; 10 km')}</div>
+    </div>
+    <div class="field"><label>Price</label>
+      <div class="chipwrap">${chip('price','Any','Any')}${chip('price','Free only','Free only')}${chip('price','Under GH₵100','Under GH₵100')}${chip('price','Under GH₵500','Under GH₵500')}</div>
+    </div>
+    <div class="field"><label>Condition <span class="faint" style="font-weight:500;">(marketplace items)</span></label>
+      <div class="chipwrap">${chip('condition','Any','Any')}${chip('condition','New','New')}${chip('condition','Like New','Like New')}${chip('condition','Good','Good')}${chip('condition','Fair','Fair')}</div>
+    </div>
+    <div class="field"><label>Negotiable <span class="faint" style="font-weight:500;">(marketplace items)</span></label>
+      <div class="chipwrap">${chip('negotiable','Any','Any')}${chip('negotiable','Negotiable only','Negotiable only')}${chip('negotiable','Fixed price only','Fixed price only')}</div>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <button class="btn btn-outline-soft" onclick="state.filters={distance:'Any',price:'Any',condition:'Any',negotiable:'Any'}; closeSheet(); renderExploreResults(); render();">Clear</button>
+      <button class="btn btn-sunset" onclick="closeSheet(); render(); toast('Filters applied')">Apply Filters</button>
+    </div>`);
+}
+function openSortSheet(){
+  const opts = ['Recommended','Nearest','Newest','Lowest Price'];
+  openSheet(`<h3>Sort by</h3>
+    <div style="display:flex;flex-direction:column;gap:2px;">
+      ${opts.map(o=>`<button class="menu-row" onclick="state.sortBy='${o}'; closeSheet(); render();"><span class="ic">${o===(state.sortBy||'Recommended')?'✓':''}</span>${o}</button>`).join('')}
+    </div>`);
+}
+function emptyState(emoji,title,sub){
+  return `<div class="empty-state">
+    <div style="width:64px;height:64px;border-radius:50%;background:var(--sunset-soft); display:flex; align-items:center; justify-content:center; font-size:28px;">${emoji}</div>
+    <h3>${title}</h3><p>${sub}</p>
+  </div>`;
+}
+/* ================= PRODUCT DETAIL ================= */
+SCREENS.product = () => {
+  const l = LISTINGS.find(x=>x.id===state.productId);
+  if(!l) return emptyState('🔍','Listing not found','This listing may have been removed.');
+  const seller = l.sellerId==='u_michael' ? ME : USERS[l.sellerId];
+  const saved = SAVED.has(l.id);
+  const statusBadge = l.status!=='active' ? `<span class="badge badge-status-${l.status}" style="margin-left:8px;">${l.status.toUpperCase()}</span>` : '';
+  const heroImg = photoUrl(l.img || categoryPhotoKey(l.category), 900);
+  return `
+  <div style="position:relative;">
+    <div style="height:230px; background-image:url('${heroImg}'); background-size:cover; background-position:center;"></div>
+    <button class="back" style="position:absolute; top:14px; left:14px; background:rgba(255,255,255,.92);" onclick="back()" aria-label="Go back">${ICON.back}</button>
+    <button class="topbar action" style="position:absolute; top:14px; right:14px; background:rgba(255,255,255,.92);" onclick="toggleSave('${l.id}')" aria-label="Save listing">${ICON.heart(saved)}</button>
+    <div style="position:absolute; bottom:12px; left:14px; display:flex; gap:4px;">
+      ${[0,1,2].map(i=>`<i style="width:${i===0?16:6}px;height:6px;border-radius:4px;background:${i===0?'#fff':'rgba(255,255,255,.55)'};"></i>`).join('')}
+    </div>
+  </div>
+  <div style="padding:18px 18px 110px;">
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:6px;">
+      <h1 style="font-size:19px; line-height:1.3;">${l.title}</h1>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+      ${l.priceType==='free' ? `<span style="font-family:var(--font-data); font-size:22px; font-weight:700; color:var(--green-700);">FREE</span>` : `<span style="font-family:var(--font-data); font-size:22px; font-weight:700; color:var(--navy-800);">${fmtMoney(l.price)}</span>`}
+      ${l.priceType==='negotiable'?'<span class="badge badge-negotiable">Negotiable</span>':''}
+      ${statusBadge}
+    </div>
+    <div style="display:flex; gap:14px; margin-bottom:16px; font-size:12px; color:var(--ink-faint);">
+      <span>${ICON.pin} ${l.location} · ${l.distance}</span>
+      <span>🕓 Posted ${l.posted}</span>
+    </div>
+    <div class="chipwrap" style="margin-bottom:16px;">
+      <span class="chip" style="pointer-events:none;">${CATEGORIES.find(c=>c.id===l.category)?.icon||'📦'} ${CATEGORIES.find(c=>c.id===l.category)?.name||l.category}</span>
+      <span class="chip" style="pointer-events:none;">Condition: ${l.condition}</span>
+    </div>
+    <h3 style="font-size:14px; margin-bottom:6px;">Description</h3>
+    <p class="muted" style="font-size:13.5px; line-height:1.6; margin-bottom:20px;">${l.desc}</p>
+
+    <button class="card pad" style="width:100%; display:flex; align-items:center; gap:12px; text-align:left; margin-bottom:14px;" onclick="go('sellerProfile',{sellerId:'${seller.id}'})">
+      ${initialsAvatar(seller)}
+      <div style="flex:1;">
+        <div style="font-weight:700; font-size:14px; display:flex; align-items:center; gap:5px;">${seller.name} ${seller.verified?'<span class="badge badge-verified">✓ Verified</span>':''}</div>
+        <div style="font-size:12px; margin-top:2px;">${starRow(seller.rating)} · ${seller.completed} deals</div>
+      </div>
+      ${ICON.chev}
+    </button>
+
+    <div class="card pad" style="background:var(--bg-dim); border:none;">
+      <div style="font-size:12px; font-weight:700; color:var(--ink-soft); margin-bottom:6px;">🛡️ Trust & Safety</div>
+      <p style="font-size:11.5px; color:var(--ink-faint); margin:0 0 8px;">Meet in a public place near ${l.location.split(',')[0]}. Never send payment before seeing the item.</p>
+      <div style="display:flex; gap:14px;">
+        <button style="border:none;background:none; font-size:11.5px; font-weight:700; color:var(--ink-soft); padding:0;" onclick="reportSheet('listing')">🚩 Report listing</button>
+        <button style="border:none;background:none; font-size:11.5px; font-weight:700; color:var(--ink-soft); padding:0;" onclick="reportSheet('user')">🚫 Block user</button>
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute; left:0; right:0; bottom:0; padding:12px 18px calc(env(safe-area-inset-bottom,0px) + 12px); background:linear-gradient(0deg, var(--bg) 70%, transparent); display:flex; gap:10px;">
+    ${l.sellerId==='u_michael' ? ownerDetailFooter(l, false) : `
+    <button class="btn btn-outline" style="flex:1;" onclick="openMessageSheet('${l.sellerId}','${l.id}','listing')">💬 Message</button>
+    ${l.priceType!=='free' ? `<button class="btn btn-sunset" style="flex:1;" onclick="openOfferSheet('${l.id}')">Make Offer</button>` : `<button class="btn btn-green" style="flex:1;" onclick="openMessageSheet('${l.sellerId}','${l.id}','interest')">I'm Interested</button>`}
+    `}
+  </div>
+  `;
+};
+/* Shared state machine: ACTIVE -> RESERVED -> SOLD / GIVEN AWAY.
+   Returns the [label, nextStatus, buttonClass] actions available from an item's current status. */
+function listingStatusActions(l, isHarvest){
+  const finalLabel = isHarvest ? (l.listingType==='give' ? 'Mark as Given Away' : 'Mark as Sold')
+                                : (l.priceType==='free' ? 'Mark as Given Away' : 'Mark as Sold');
+  const finalStatus = isHarvest ? (l.listingType==='give' ? 'given' : 'sold')
+                                 : (l.priceType==='free' ? 'given' : 'sold');
+  if(l.status==='active'){
+    return [['Mark as Reserved','reserved','btn-outline'], [finalLabel, finalStatus, 'btn-primary']];
+  }
+  if(l.status==='reserved'){
+    return [['Unreserve & Relist','active','btn-outline-soft'], [finalLabel, finalStatus, 'btn-primary']];
+  }
+  return [];
+}
+function ownerDetailFooter(l, isHarvest){
+  const actions = listingStatusActions(l, isHarvest);
+  if(!actions.length){
+    return `<div class="btn btn-outline-soft" style="flex:1; pointer-events:none;">This listing is ${l.status.toUpperCase()}</div>`;
+  }
+  return actions.map(([label,status,cls])=>`<button class="btn ${cls}" style="flex:1;" onclick="closeListingDeal('${l.id}','${status}',${isHarvest})">${label}</button>`).join('');
+}
+SCREENS.sellerProfile = () => {
+  const s = state.sellerId==='u_michael'? ME : USERS[state.sellerId];
+  const items = LISTINGS.filter(l=>l.sellerId===s.id);
+  const harvestItems = HARVEST.filter(h=>h.gardenerId===s.id);
+  return `
+  ${topbar(s.gardenName || s.name)}
+  <div style="padding:6px 18px 30px;">
+    <div style="display:flex; align-items:center; gap:14px; margin-bottom:10px;">
+      ${initialsAvatar(s,64,22)}
+      <div>
+        <div style="font-weight:800; font-size:17px; display:flex; align-items:center; gap:6px;">${s.gardenName || s.name} ${s.verified?'<span class="badge badge-verified">✓ Verified</span>':''}</div>
+        <div style="font-size:13px; margin-top:3px;">${starRow(s.rating)} · ${s.completed} completed</div>
+        <div class="faint" style="font-size:12px; margin-top:2px;">${ICON.pin} ${s.location}</div>
+      </div>
+    </div>
+    ${s.id!=='u_michael' ? `<div class="faint" style="font-size:10.5px; margin-bottom:18px;">🧪 Prototype profile — illustrative demo data, not a real GoNabor account.</div>` : `<div style="margin-bottom:18px;"></div>`}
+    ${harvestItems.length ? `<h3 style="font-size:14px; margin-bottom:10px;">🌱 Home Harvest listings</h3><div class="grid2" style="margin-bottom:20px;">${harvestItems.map(harvestCard).join('')}</div>` : ''}
+    <h3 style="font-size:14px; margin-bottom:10px;">Active listings</h3>
+    <div class="grid2">${items.length? items.map(productCard).join('') : '<p class="faint" style="font-size:13px;">No active listings.</p>'}</div>
+  </div>`;
+};
+function reportSheet(kind){
+  const reasons = kind==='listing' ? ['Prohibited item','Misleading information','Suspected scam','Inappropriate content','Other']
+                                    : ['Harassment','Suspicious behavior','Scam attempt','Fake profile','Other'];
+  openSheet(`<h3>Report ${kind==='listing'?'this listing':'this user'}</h3>
+    <div style="display:flex;flex-direction:column;gap:2px; margin-bottom:14px;">
+      ${reasons.map(r=>`<button class="menu-row" onclick="submitReport()"><span class="ic">⚑</span>${r}</button>`).join('')}
+    </div>`);
+}
+function submitReport(){ closeSheet(); toast('Thanks — our team will review this report.'); }
+
+/* ================= HARVEST DETAIL ================= */
+SCREENS.harvest = () => {
+  const h = HARVEST.find(x=>x.id===state.harvestId);
+  if(!h) return emptyState('🌱','Harvest not found','This listing may no longer be available.');
+  const g = h.gardenerId==='u_michael' ? ME : USERS[h.gardenerId];
+  const saved = SAVED.has(h.id);
+  const heroImg = photoUrl(h.img || 'tomatoes', 900);
+  return `
+  <div style="position:relative;">
+    <div style="height:210px; background-image:url('${heroImg}'); background-size:cover; background-position:center;"></div>
+    <button class="back" style="position:absolute; top:14px; left:14px; background:rgba(255,255,255,.92);" onclick="back()" aria-label="Go back">${ICON.back}</button>
+    <button class="topbar action" style="position:absolute; top:14px; right:14px; background:rgba(255,255,255,.92);" onclick="toggleSave('${h.id}')" aria-label="Save listing">${ICON.heart(saved)}</button>
+    <span class="badge badge-harvest" style="position:absolute; bottom:12px; left:14px;">🌱 HOME HARVEST</span>
+  </div>
+  <div style="padding:18px 18px 110px;">
+    <h1 style="font-size:20px; margin-bottom:6px;">${h.icon} ${h.produce}</h1>
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+      ${h.listingType==='give' ? `<span style="font-family:var(--font-data); font-size:22px; font-weight:700; color:var(--green-700);">FREE</span>` : `<span style="font-family:var(--font-data); font-size:22px; font-weight:700; color:var(--navy-800);">${fmtMoney(h.price)} / ${h.unit}</span>`}
+      <span class="badge" style="background:var(--green-100); color:var(--green-700);">${h.availability}</span>
+    </div>
+    <div style="font-size:12px; color:var(--ink-faint); margin-bottom:18px;">${ICON.pin} ${h.location} · ${h.distance}</div>
+
+    <div class="card pad" style="margin-bottom:16px;">
+      <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px;"><span class="faint">Quantity</span><b>${h.quantity} ${h.unit}</b></div>
+      <div style="display:flex; justify-content:space-between; font-size:13px;"><span class="faint">Category</span><b>${HARVEST_CATS.find(c=>c.id===h.category)?.name}</b></div>
+    </div>
+
+    <h3 style="font-size:14px; margin-bottom:6px;">About the harvest</h3>
+    <p class="muted" style="font-size:13.5px; line-height:1.6; margin-bottom:20px;">"${h.desc}"</p>
+
+    <button class="card pad" style="width:100%; display:flex; align-items:center; gap:12px; text-align:left;" onclick="go('sellerProfile',{sellerId:'${g.id}'})">
+      ${initialsAvatar(g)}
+      <div style="flex:1;">
+        <div style="font-weight:700; font-size:14px;">${g.gardenName||g.name}</div>
+        <div style="font-size:12px; margin-top:2px;">${starRow(g.rating)}</div>
+      </div>
+      ${ICON.chev}
+    </button>
+  </div>
+  <div style="position:absolute; left:0; right:0; bottom:0; padding:12px 18px calc(env(safe-area-inset-bottom,0px) + 12px); background:linear-gradient(0deg, var(--bg) 70%, transparent); display:flex; gap:10px;">
+    ${h.gardenerId==='u_michael' ? ownerDetailFooter(h, true) : `
+    <button class="btn btn-sunset" style="flex:1;" onclick="openMessageSheet('${h.gardenerId}','${h.id}','harvest')">💬 Message Gardener</button>
+    <button class="btn btn-outline" style="flex:1;" onclick="openMessageSheet('${h.gardenerId}','${h.id}','interest')">I'm Interested</button>
+    `}
+  </div>`;
+};
+
+/* ================= HOME HARVEST DISCOVERY ================= */
+state.harvestTab = 'available';
+SCREENS.harvestHome = () => {
+  const tab = state.harvestTab||'available';
+  let list = HARVEST;
+  if(tab==='free') list = HARVEST.filter(h=>h.listingType==='give');
+  return `
+  ${topbar('🌱 Home Harvest', {backFn:"setTab('home')"})}
+  <div style="padding:0 18px 90px;">
+    <p class="muted" style="font-size:13px; margin-bottom:16px;">Fresh from gardens near you.</p>
+    <div class="tabs" style="margin-bottom:16px;">
+      <button class="tab ${tab==='available'?'on harvest':''}" onclick="state.harvestTab='available'; render();">Available Now</button>
+      <button class="tab ${tab==='free'?'on harvest':''}" onclick="state.harvestTab='free'; render();">Free Harvest</button>
+      <button class="tab ${tab==='all'?'on harvest':''}" onclick="state.harvestTab='all'; render();">All</button>
+      <button class="tab" style="opacity:.55;" onclick="toast('Coming soon — pre-order upcoming harvests')">Harvesting Soon</button>
+    </div>
+    <div class="eyebrow" style="margin-bottom:10px;">Browse by produce</div>
+    <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:6px; margin-bottom:20px;">
+      ${HARVEST_CATS.map(c=>`
+        <button onclick="toast('Showing '+'${c.name}')" style="flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px; background:none; border:none; width:60px;">
+          <div style="width:50px;height:50px;border-radius:16px; background:var(--sunset-soft); display:flex; align-items:center; justify-content:center; font-size:22px;">${c.icon}</div>
+          <span style="font-size:10px; font-weight:700; color:var(--ink-soft);">${c.name}</span>
+        </button>`).join('')}
+    </div>
+    <div class="grid2">${list.map(harvestCard).join('')}</div>
+  </div>`;
+};
+/* ================= MESSAGE / OFFER SHEETS ================= */
+function openMessageSheet(sellerId, listingId, kind){
+  const defaultMsg = kind==='interest' ? "Hi! I'm interested in this — is it still available?" : "Hi, is this still available?";
+  openSheet(`<h3>Message ${USERS[sellerId]?USERS[sellerId].name:'seller'}</h3>
+    <div class="field"><textarea id="msgText">${defaultMsg}</textarea></div>
+    <button class="btn btn-sunset" onclick="sendNewMessage('${sellerId}','${listingId}')">Send Message</button>`);
+}
+function sendNewMessage(sellerId, listingId){
+  const txt = document.getElementById('msgText').value.trim();
+  if(!txt){ toast('Write a message first'); return; }
+  let convo = CONVERSATIONS.find(c=>c.withId===sellerId && c.listingId===listingId);
+  if(!convo){
+    convo = {id:'c'+(CONVERSATIONS.length+1), withId:sellerId, listingId, lastMsg:txt, time:'Just now', unread:false, thread:[]};
+    CONVERSATIONS.unshift(convo);
+  }
+  convo.thread.push({from:'me', text:txt});
+  convo.lastMsg = txt; convo.time='Just now';
+  closeSheet();
+  toast('Message sent');
+  go('chat', {chatId:convo.id});
+}
+
+function openOfferSheet(listingId){
+  const l = LISTINGS.find(x=>x.id===listingId);
+  openSheet(`<h3>Make an Offer</h3>
+    <p class="muted" style="font-size:13px; margin-bottom:14px;">Asking price: <b style="color:var(--ink);">${fmtMoney(l.price)}</b></p>
+    <div class="field"><label>Your offer (GH₵)</label><input type="number" id="offerAmt" placeholder="e.g. ${Math.round(l.price*0.85)}"></div>
+    <div class="field"><label>Message (optional)</label><textarea id="offerMsg" placeholder="Would you accept this offer?"></textarea></div>
+    <button class="btn btn-sunset" onclick="submitOffer('${listingId}')">Submit Offer</button>`);
+}
+function submitOffer(listingId){
+  const amt = Number(document.getElementById('offerAmt').value);
+  if(!amt || amt<=0){ toast('Enter a valid offer amount'); return; }
+  const msg = document.getElementById('offerMsg').value.trim();
+  const l = LISTINGS.find(x=>x.id===listingId);
+  const offer = {id:'o'+(OFFERS.length+1), listingId, buyerId:'u_michael', sellerId:l.sellerId, amount:amt, message:msg, status:'pending', createdAt:'Just now'};
+  OFFERS.push(offer);
+  let convo = CONVERSATIONS.find(c=>c.withId===l.sellerId && c.listingId===listingId);
+  if(!convo){ convo={id:'c'+(CONVERSATIONS.length+1), withId:l.sellerId, listingId, lastMsg:'', time:'Just now', unread:false, thread:[]}; CONVERSATIONS.unshift(convo); }
+  convo.thread.push({from:'me', type:'offer', amount:amt, text:msg||'Would you accept this offer?'});
+  convo.lastMsg = `You offered ${fmtMoney(amt)}`; convo.time='Just now';
+  closeSheet();
+  toast('Offer sent!');
+  go('chat', {chatId:convo.id});
+}
+
+function sellerRespondOffer(offerId, action){
+  const offer = OFFERS.find(o=>o.id===offerId);
+  if(!offer) return;
+  const l = LISTINGS.find(x=>x.id===offer.listingId);
+  if(action==='accept'){
+    offer.status='accepted';
+    if(l){ l.status='reserved'; }
+    toast('Offer accepted — listing marked RESERVED');
+    pushNotification('accepted', `Your offer of ${fmtMoney(offer.amount)} for "${l?.title||'the listing'}" was accepted — it's now RESERVED. The seller will mark it SOLD once the handover is complete.`);
+  } else if(action==='decline'){
+    offer.status='declined';
+    toast('Offer declined');
+    pushNotification('declined', `Your offer of ${fmtMoney(offer.amount)} for "${l?.title||'the listing'}" was declined.`);
+  }
+  render();
+}
+function openCounterSheet(offerId){
+  const offer = OFFERS.find(o=>o.id===offerId);
+  openSheet(`<h3>Send a Counter-Offer</h3>
+    <p class="muted" style="font-size:13px; margin-bottom:14px;">Buyer offered <b style="color:var(--ink);">${fmtMoney(offer.amount)}</b></p>
+    <div class="field"><label>Your counter (GH₵)</label><input type="number" id="counterAmt" placeholder="e.g. ${offer.amount+30}"></div>
+    <button class="btn btn-sunset" onclick="submitCounter('${offerId}')">Send Counter-Offer</button>`);
+}
+function submitCounter(offerId){
+  const amt = Number(document.getElementById('counterAmt').value);
+  if(!amt||amt<=0){ toast('Enter a valid amount'); return; }
+  const offer = OFFERS.find(o=>o.id===offerId);
+  const l = LISTINGS.find(x=>x.id===offer.listingId);
+  offer.status='countered'; offer.counterAmount=amt;
+  closeSheet(); toast('Counter-offer sent');
+  pushNotification('offer', `You sent a counter-offer of ${fmtMoney(amt)} for "${l?.title||'the listing'}".`);
+  render();
+}
+function resolveCounterOffer(offerId, action){
+  const offer = OFFERS.find(o=>o.id===offerId);
+  if(!offer) return;
+  const l = LISTINGS.find(x=>x.id===offer.listingId);
+  if(action==='accept'){
+    offer.status='accepted';
+    if(l){ l.status='reserved'; }
+    toast('Counter accepted — listing marked RESERVED');
+    pushNotification('accepted', `Counter-offer of ${fmtMoney(offer.counterAmount)} accepted — "${l?.title||'listing'}" is now RESERVED.`);
+  } else {
+    offer.status='declined';
+    toast('Counter declined');
+    pushNotification('declined', `You declined the counter-offer of ${fmtMoney(offer.counterAmount)} for "${l?.title||'listing'}".`);
+  }
+  render();
+}
+function openBuyerCounterSheet(offerId){
+  const offer = OFFERS.find(o=>o.id===offerId);
+  openSheet(`<h3>Send a New Offer</h3>
+    <p class="muted" style="font-size:13px; margin-bottom:14px;">Seller countered with <b style="color:var(--ink);">${fmtMoney(offer.counterAmount)}</b></p>
+    <div class="field"><label>Your new offer (GH₵)</label><input type="number" id="buyerCounterAmt" placeholder="e.g. ${Math.round((offer.amount+offer.counterAmount)/2)}"></div>
+    <button class="btn btn-sunset" onclick="submitBuyerCounter('${offerId}')">Send Offer</button>`);
+}
+function submitBuyerCounter(offerId){
+  const amt = Number(document.getElementById('buyerCounterAmt').value);
+  if(!amt||amt<=0){ toast('Enter a valid amount'); return; }
+  const offer = OFFERS.find(o=>o.id===offerId);
+  const l = LISTINGS.find(x=>x.id===offer.listingId);
+  offer.amount = amt; offer.status='pending'; offer.counterAmount=null;
+  closeSheet(); toast('New offer sent to seller');
+  pushNotification('offer', `You sent a new offer of ${fmtMoney(amt)} for "${l?.title||'the listing'}".`);
+  render();
+}
+
+/* ================= MESSAGES TAB ================= */
+SCREENS.messages = () => {
+  return `
+  <div style="padding:14px 18px 90px;">
+    <h1 style="font-size:20px; margin-bottom:14px;">Messages</h1>
+    ${!CONVERSATIONS.length ? emptyState('💬','No messages yet','Your conversations will appear here.') :
+      `<div style="display:flex; flex-direction:column; gap:10px;">
+        ${CONVERSATIONS.map(c=>{
+          const u = USERS[c.withId]||ME;
+          const l = LISTINGS.find(x=>x.id===c.listingId) || HARVEST.find(x=>x.id===c.listingId);
+          return `<button class="rowcard" onclick="go('chat',{chatId:'${c.id}'})">
+            ${initialsAvatar(u,48,17)}
+            <div class="info">
+              <div class="title">${u.name} ${c.unread?'<span style="width:7px;height:7px;background:var(--orange-500);border-radius:50%; display:inline-block; margin-left:5px;"></span>':''}</div>
+              <div class="sub">${l? (l.title||l.produce) : ''}</div>
+              <div class="sub" style="color:var(--ink-soft); margin-top:2px;">${c.lastMsg}</div>
+            </div>
+            <div class="faint" style="font-size:10.5px; align-self:flex-start;">${c.time}</div>
+          </button>`;
+        }).join('')}
+      </div>`}
+  </div>`;
+};
+
+SCREENS.chat = () => {
+  const c = CONVERSATIONS.find(x=>x.id===state.chatId);
+  if(!c) return emptyState('💬','Conversation not found','');
+  c.unread=false;
+  const u = USERS[c.withId]||ME;
+  const l = LISTINGS.find(x=>x.id===c.listingId) || HARVEST.find(x=>x.id===c.listingId);
+  const isHarvest = !!HARVEST.find(x=>x.id===c.listingId);
+  const offer = OFFERS.slice().reverse().find(o=>o.listingId===c.listingId);
+  return `
+  ${topbar(u.name, {backFn:"setTab('messages')"})}
+  ${l ? `<button class="rowcard" style="margin:0 18px 10px; width:calc(100% - 36px);" onclick="go(${isHarvest?"'harvest',{harvestId:'"+l.id+"'}":"'product',{productId:'"+l.id+"'}"})">
+      <div class="thumb-sm" style="background-image:url('${photoUrl(l.img || categoryPhotoKey(l.category), 200)}');"></div>
+      <div class="info">
+        <div class="title">${l.title||l.produce}</div>
+        <div class="sub" style="display:flex; align-items:center; gap:6px;">
+          ${l.priceType==='free'||l.listingType==='give' ? 'FREE' : fmtMoney(l.price)}
+          ${l.priceType==='negotiable' ? '<span class="badge badge-negotiable" style="padding:2px 7px; font-size:9.5px;">Negotiable</span>' : ''}
+        </div>
+        <div class="sub" style="margin-top:2px;">${ICON.pin} ${l.location}${l.distance?' · '+l.distance:''}</div>
+      </div>
+    </button>` : ''}
+  <div style="flex:1; display:flex; flex-direction:column; padding:6px 18px 14px; gap:2px;">
+    ${c.thread.map(m=>{
+      if(m.type==='offer'){
+        return `<div class="msg offer ${m.from==='me'?'out':''}">
+          <div style="font-size:11px; font-weight:800; color:var(--orange-600); margin-bottom:3px;">${m.from==='me'?'YOUR OFFER':'OFFER'}</div>
+          <div style="font-family:var(--font-data); font-size:16px; font-weight:700;">${fmtMoney(m.amount)}</div>
+          ${m.text?`<div style="font-size:12.5px; margin-top:3px;">${m.text}</div>`:''}
+        </div>`;
+      }
+      return `<div class="msg ${m.from==='me'?'out':'in'}">${m.text}</div>`;
+    }).join('')}
+    ${offer && offer.status!=='accepted' && offer.status!=='declined' ? offerActionBlock(offer, c) : ''}
+    ${offer && offer.status==='accepted' ? `<div class="msg in" style="background:var(--green-100); border-color:#CDECD5; color:var(--green-700); font-weight:700;">✓ Offer of ${fmtMoney(offer.amount)} accepted — listing marked RESERVED.</div>`:''}
+    ${offer && offer.status==='declined' ? `<div class="msg in" style="background:var(--danger-soft); border-color:#F7CFCB; color:var(--danger); font-weight:700;">Offer declined.</div>`:''}
+    ${offer && offer.status==='countered' ? `<div class="msg offer">
+        <div style="font-size:11px; font-weight:800; color:var(--orange-600); margin-bottom:3px;">SELLER COUNTER-OFFER</div>
+        <div style="font-family:var(--font-data); font-size:16px; font-weight:700;">${fmtMoney(offer.counterAmount)}</div>
+        <div style="display:flex; gap:6px; margin-top:10px;">
+          <button class="btn btn-green btn-sm" style="flex:1;" onclick="resolveCounterOffer('${offer.id}','accept')">Accept</button>
+          <button class="btn btn-outline btn-sm" style="flex:1;" onclick="openBuyerCounterSheet('${offer.id}')">Counter</button>
+          <button class="btn btn-outline-soft btn-sm" style="flex:1;" onclick="resolveCounterOffer('${offer.id}','decline')">Decline</button>
+        </div>
+      </div>`:''}
+    ${ownerCloseDealBlock(l, isHarvest)}
+  </div>
+  <div style="padding:10px 14px calc(env(safe-area-inset-bottom,0px) + 10px); border-top:1px solid var(--line); display:flex; gap:8px; align-items:center;">
+    <input id="chatInput" placeholder="Type a message..." style="flex:1; border:1.5px solid var(--line); border-radius:22px; padding:11px 16px; font-size:13.5px; outline:none;">
+    ${l && !isHarvest && l.priceType!=='free' ? `<button class="btn btn-outline btn-sm" onclick="openOfferSheet('${l.id}')">Offer</button>` : ''}
+    <button style="width:40px;height:40px;border-radius:50%;background:var(--navy-700); border:none; color:#fff; display:flex; align-items:center; justify-content:center;" onclick="sendChatInput('${c.id}')">➤</button>
+  </div>`;
+};
+function offerActionBlock(offer, c){
+  // Buyer (me) view of own pending offer
+  if(offer.buyerId==='u_michael'){
+    return `<div class="faint" style="font-size:11.5px; text-align:center; margin:4px 0 2px;">Waiting for seller's response…</div>
+    <div class="card pad" style="background:var(--bg-dim); border:none; margin-bottom:4px;">
+      <div style="font-size:10.5px; font-weight:700; color:var(--ink-faint); margin-bottom:8px;">🧪 Prototype demo — since this build has one account, you can simulate the seller's reply to ${fmtMoney(offer.amount)}:</div>
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-green btn-sm" style="flex:1;" onclick="sellerRespondOffer('${offer.id}','accept')">Accept</button>
+        <button class="btn btn-outline btn-sm" style="flex:1;" onclick="openCounterSheet('${offer.id}')">Counter</button>
+        <button class="btn btn-danger-outline btn-sm" style="flex:1;" onclick="sellerRespondOffer('${offer.id}','decline')">Decline</button>
+      </div>
+    </div>`;
+  }
+  // Seller (me) view — respond to buyer offer
+  return `<div class="msg offer" style="align-self:stretch; max-width:100%;">
+    <div style="font-size:11px; font-weight:800; color:var(--orange-600); margin-bottom:3px;">OFFER RECEIVED — ${fmtMoney(offer.amount)}</div>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button class="btn btn-green btn-sm" style="flex:1;" onclick="sellerRespondOffer('${offer.id}','accept')">Accept</button>
+      <button class="btn btn-outline btn-sm" style="flex:1;" onclick="openCounterSheet('${offer.id}')">Counter</button>
+      <button class="btn btn-danger-outline btn-sm" style="flex:1;" onclick="sellerRespondOffer('${offer.id}','decline')">Decline</button>
+    </div>
+  </div>`;
+}
+/* Lets the owner of a listing close the deal directly from the conversation —
+   covers "I'm interested" free/harvest chats and give-away items with no formal offer. */
+function ownerCloseDealBlock(l, isHarvest){
+  if(!l) return '';
+  const isMine = isHarvest ? l.gardenerId==='u_michael' : l.sellerId==='u_michael';
+  if(!isMine) return '';
+  const actions = listingStatusActions(l, isHarvest);
+  if(!actions.length) return '';
+  return `<div class="card pad" style="margin:8px 0; background:var(--bg-dim); border:none;">
+    <div style="font-size:11.5px; font-weight:700; color:var(--ink-soft); margin-bottom:8px;">This is your listing — ready to move it forward?</div>
+    <div style="display:flex; gap:8px;">
+      ${actions.map(([label,status,cls])=>`<button class="btn ${cls} btn-sm" style="flex:1;" onclick="closeListingDeal('${l.id}','${status}',${isHarvest})">${label}</button>`).join('')}
+    </div>
+  </div>`;
+}
+function closeListingDeal(id, status, isHarvest){
+  const arr = isHarvest ? HARVEST : LISTINGS;
+  const item = arr.find(x=>x.id===id);
+  if(!item) return;
+  const wasReserved = item.status==='reserved';
+  item.status = status;
+
+  if(status==='active' && wasReserved){
+    // Unreserving: the previous buyer's accepted offer no longer holds — release it so the
+    // listing shows no stale "accepted" offer and the buyer sees why the deal fell through.
+    if(!isHarvest){
+      const heldOffer = OFFERS.find(o=>o.listingId===id && o.status==='accepted');
+      if(heldOffer){
+        heldOffer.status='declined';
+        pushNotification('declined', `The reservation on "${item.title}" was cancelled — the item is active again.`);
+      }
+    }
+    toast('Unreserved — listing is active and visible to buyers again');
+    pushNotification('status', `Your listing "${item.title||item.produce}" is active again and visible to buyers.`);
+  } else {
+    toast(`Marked as ${status.toUpperCase()}`);
+    pushNotification('status', `Your listing "${item.title||item.produce}" is now ${status.toUpperCase()}.`);
+  }
+  render();
+}
+function sendChatInput(cid){
+  const input = document.getElementById('chatInput');
+  const txt = input.value.trim();
+  if(!txt) return;
+  const c = CONVERSATIONS.find(x=>x.id===cid);
+  c.thread.push({from:'me', text:txt});
+  c.lastMsg=txt; c.time='Just now';
+  render();
+}
+
+/* ================= NOTIFICATIONS ================= */
+SCREENS.notifications = () => {
+  const iconFor = {message:'💬', offer:'💰', status:'📦', accepted:'✅', declined:'❌'};
+  const html = `
+  ${topbar('Notifications')}
+  <div style="padding:4px 18px 30px;">
+    ${!NOTIFICATIONS.length ? emptyState('🔔','Nothing yet','Updates about messages and offers will show up here.') :
+      NOTIFICATIONS.map(n=>`
+      <div class="notif ${n.unread?'unread':''}">
+        <div class="ic" style="background:var(--bg-dim);">${iconFor[n.type]||'🔔'}</div>
+        <div style="flex:1;">
+          <div style="font-size:13.5px; font-weight:${n.unread?700:500};">${n.text}</div>
+          <div class="faint" style="font-size:11px; margin-top:3px;">${n.time}</div>
+        </div>
+      </div>`).join('')}
+  </div>`;
+  NOTIFICATIONS.forEach(n=>n.unread=false);
+  return html;
+};
+/* ================= POST HUB ================= */
+function openPostHub(){
+  openSheet(`<h3>What do you want to do?</h3>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <button class="rowcard" style="align-items:center;" onclick="closeSheet(); startPostFlow('give')">
+        <div class="thumb-sm" style="background:var(--green-100); font-size:24px;">🎁</div>
+        <div class="info"><div class="title" style="font-size:14.5px;">Give Something Away</div><div class="sub">Someone nearby may need it.</div></div>
+        ${ICON.chev}
+      </button>
+      <button class="rowcard" style="align-items:center;" onclick="closeSheet(); startPostFlow('sell')">
+        <div class="thumb-sm" style="background:#FFF3E2; font-size:24px;">💰</div>
+        <div class="info"><div class="title" style="font-size:14.5px;">Sell Something</div><div class="sub">Turn something you don't need into money.</div></div>
+        ${ICON.chev}
+      </button>
+      <button class="rowcard" style="align-items:center;" onclick="closeSheet(); startPostFlow('harvest')">
+        <div class="thumb-sm" style="background:var(--sunset); font-size:24px;">🌱</div>
+        <div class="info"><div class="title" style="font-size:14.5px;">Sell / Give Home Harvest</div><div class="sub">Share what your garden has produced.</div></div>
+        ${ICON.chev}
+      </button>
+    </div>`);
+}
+function startPostFlow(kind){
+  closeSheet();
+  state.postFlow = kind;
+  state.postStep = 1;
+  state.postData = {photos:[], priceType: kind==='sell'?'fixed':undefined, harvestAction: kind==='harvest'? 'sell':undefined};
+  go(kind==='sell'?'postSell':kind==='give'?'postGive':'postHarvest', {stack:[]});
+}
+function stepBar(total, current){
+  return `<div class="steps">${[...Array(total)].map((_,i)=>`<i class="${i<current?'done':''}"></i>`).join('')}</div>`;
+}
+function photoGrid(){
+  const photos = state.postData.photos||[];
+  const emojis = ['📷','🖼️','📸'];
+  let html = photos.map((p,i)=>`<div class="photobox filled ${['tc1','tc2','tc3'][i%3]}" style="font-size:26px;">${p}<button class="rm" onclick="event.stopPropagation(); removePhoto(${i})" aria-label="Remove photo">✕</button></div>`).join('');
+  if(photos.length<6){
+    html += `<button class="photobox" onclick="addMockPhoto()">${ICON.camera}</button>`;
+  }
+  return `<div class="photogrid">${html}</div>`;
+}
+function addMockPhoto(){
+  const options = ['📦','🖼️','📷','🛋️','👕','📱','🍅','🥬'];
+  state.postData.photos = state.postData.photos||[];
+  state.postData.photos.push(options[state.postData.photos.length % options.length]);
+  render();
+}
+function removePhoto(i){ state.postData.photos.splice(i,1); render(); }
+function setPostField(key, value){
+  state.postData[key] = value;
+  render();
+}
+
+/* ---- SELL FLOW ---- */
+SCREENS.postSell = () => {
+  const step = state.postStep;
+  const d = state.postData;
+  let body='';
+  if(step===1){
+    body = `<h2 style="font-size:18px; margin-bottom:6px;">Add Photos</h2>
+      <p class="muted" style="font-size:13px; margin-bottom:16px;">Clear photos help buyers trust your listing.</p>
+      ${photoGrid()}`;
+  } else if(step===2){
+    body = `<h2 style="font-size:18px; margin-bottom:16px;">Item Details</h2>
+      <div class="field"><label>Title</label><input type="text" id="f_title" value="${d.title||''}" oninput="state.postData.title=this.value" placeholder="e.g. Samsung Microwave"></div>
+      <div class="field"><label>Category</label>
+        <div class="chipwrap">${CATEGORIES.map(c=>`<button class="chip ${d.category===c.id?'on':''}" onclick="setPostField('category','${c.id}')">${c.icon} ${c.name}</button>`).join('')}</div>
+      </div>
+      <div class="field"><label>Condition</label>
+        <div class="chipwrap">${['New','Like New','Good','Fair'].map(c=>`<button class="chip ${d.condition===c?'on':''}" onclick="setPostField('condition','${c}')">${c}</button>`).join('')}</div>
+      </div>
+      <div class="field"><label>Description</label><textarea id="f_desc" oninput="state.postData.desc=this.value" placeholder="Describe the item, why you're selling, any flaws...">${d.desc||''}</textarea></div>`;
+  } else if(step===3){
+    body = `<h2 style="font-size:18px; margin-bottom:16px;">Price</h2>
+      <div class="field"><label>Price (GH₵)</label><input type="number" id="f_price" value="${d.price||''}" oninput="state.postData.price=Number(this.value)||0" placeholder="e.g. 350"></div>
+      <div class="field"><label>Price Type</label>
+        <div class="pairsel">
+          <button class="${d.priceType==='fixed'?'on':''}" onclick="setPostField('priceType','fixed')">🏷️<span>Fixed Price</span></button>
+          <button class="${d.priceType==='negotiable'?'on':''}" onclick="setPostField('priceType','negotiable')">🤝<span>Negotiable</span></button>
+        </div>
+      </div>`;
+  } else if(step===4){
+    body = `<h2 style="font-size:18px; margin-bottom:6px;">Location</h2>
+      <p class="muted" style="font-size:13px; margin-bottom:16px;">Only your approximate area is shown publicly.</p>
+      <div class="chipwrap">${AREAS.map(a=>`<button class="chip ${d.location===a?'on':''}" onclick="setPostField('location','${a}')">${a}</button>`).join('')}</div>`;
+  } else if(step===5){
+    body = `<h2 style="font-size:18px; margin-bottom:14px;">Review</h2>
+      ${previewCard(d,'sell')}`;
+  }
+  return `
+  ${topbar('Sell Something', {backFn: step===1? "cancelPost()":"postStepBack()"})}
+  ${stepBar(5, step)}
+  <div style="padding:0 20px 110px; flex:1;">${body}</div>
+  <div style="position:absolute; left:0; right:0; bottom:0; padding:14px 20px calc(env(safe-area-inset-bottom,0px) + 14px); background:linear-gradient(0deg, var(--bg) 75%, transparent);">
+    <button class="btn btn-sunset" onclick="${step===5?'publishListing()':'postStepNext(&quot;postSell&quot;,5)'}">${step===5?'POST LISTING':'Continue'}</button>
+  </div>`;
+};
+
+/* ---- GIVE FLOW ---- */
+SCREENS.postGive = () => {
+  const step = state.postStep;
+  const d = state.postData;
+  let body='';
+  if(step===1){
+    body = `<h2 style="font-size:18px; margin-bottom:6px;">Add Photos</h2><p class="muted" style="font-size:13px; margin-bottom:16px;">Show what you're giving away.</p>${photoGrid()}`;
+  } else if(step===2){
+    body = `<h2 style="font-size:18px; margin-bottom:16px;">Describe It</h2>
+      <div class="field"><label>Title</label><input type="text" id="f_title" value="${d.title||''}" oninput="state.postData.title=this.value" placeholder="e.g. Children's Story Books"></div>
+      <div class="field"><label>Category</label><div class="chipwrap">${CATEGORIES.map(c=>`<button class="chip give ${d.category===c.id?'on':''}" onclick="setPostField('category','${c.id}')">${c.icon} ${c.name}</button>`).join('')}</div></div>
+      <div class="field"><label>Description</label><textarea id="f_desc" oninput="state.postData.desc=this.value" placeholder="What is it, and why are you giving it away?">${d.desc||''}</textarea></div>`;
+  } else if(step===3){
+    body = `<h2 style="font-size:18px; margin-bottom:6px;">Location</h2><p class="muted" style="font-size:13px; margin-bottom:16px;">Only your approximate area is shown.</p>
+      <div class="chipwrap">${AREAS.map(a=>`<button class="chip give ${d.location===a?'on':''}" onclick="setPostField('location','${a}')">${a}</button>`).join('')}</div>`;
+  } else if(step===4){
+    body = `<h2 style="font-size:18px; margin-bottom:14px;">Review</h2>${previewCard(d,'give')}`;
+  }
+  return `
+  ${topbar('Give Something Away', {backFn: step===1? "cancelPost()":"postStepBack()"})}
+  ${stepBar(4, step)}
+  <div style="padding:0 20px 110px; flex:1;">${body}</div>
+  <div style="position:absolute; left:0; right:0; bottom:0; padding:14px 20px calc(env(safe-area-inset-bottom,0px) + 14px); background:linear-gradient(0deg, var(--bg) 75%, transparent);">
+    <button class="btn btn-green" onclick="${step===4?'publishGive()':'postStepNext(&quot;postGive&quot;,4)'}">${step===4?'GIVE IT AWAY':'Continue'}</button>
+  </div>`;
+};
+
+/* ---- HOME HARVEST FLOW ---- */
+SCREENS.postHarvest = () => {
+  const step = state.postStep;
+  const d = state.postData;
+  let body='';
+  if(step===1){
+    body = `<h2 style="font-size:18px; margin-bottom:14px;">What are you harvesting?</h2>
+      <div class="chipwrap">${HARVEST_CATS.map(c=>`<button class="chip harvest ${d.category===c.id?'on':''}" onclick="setPostField('category','${c.id}')">${c.icon} ${c.name}</button>`).join('')}
+      <button class="chip harvest ${d.category==='other'?'on':''}" onclick="setPostField('category','other')">🧺 Other</button></div>`;
+  } else if(step===2){
+    body = `<h2 style="font-size:18px; margin-bottom:6px;">Add Photos</h2><p class="muted" style="font-size:13px; margin-bottom:16px;">Show off the fresh harvest.</p>${photoGrid()}
+      <div class="field" style="margin-top:16px;"><label>Title</label><input type="text" id="f_title" value="${d.title||''}" oninput="state.postData.title=this.value" placeholder="e.g. Fresh Tomatoes"></div>`;
+  } else if(step===3){
+    body = `<h2 style="font-size:18px; margin-bottom:16px;">Quantity</h2>
+      <div class="field"><label>Amount</label><input type="number" id="f_qty" value="${d.quantity||''}" oninput="state.postData.quantity=Number(this.value)||0" placeholder="e.g. 5"></div>
+      <div class="field"><label>Unit</label><div class="chipwrap">${['bowls','kg','bunch','basket','bag','piece'].map(u=>`<button class="chip harvest ${d.unit===u?'on':''}" onclick="setPostField('unit','${u}')">${u}</button>`).join('')}</div></div>`;
+  } else if(step===4){
+    body = `<h2 style="font-size:18px; margin-bottom:16px;">What do you want to do?</h2>
+      <div class="pairsel" style="margin-bottom:16px;">
+        <button class="${d.harvestAction==='sell'?'on':''}" onclick="setPostField('harvestAction','sell')">💰<span>SELL</span></button>
+        <button class="${d.harvestAction==='give'?'on':''}" onclick="setPostField('harvestAction','give')">🎁<span>GIVE AWAY</span></button>
+      </div>
+      ${d.harvestAction==='sell' ? `<div class="field"><label>Price per ${d.unit||'unit'} (GH₵)</label><input type="number" id="f_hprice" value="${d.price||''}" oninput="state.postData.price=Number(this.value)||0" placeholder="e.g. 25"></div>` : ''}`;
+  } else if(step===5){
+    body = `<h2 style="font-size:18px; margin-bottom:14px;">Availability</h2>
+      <div class="chipwrap">${['Available now','Available today','Available tomorrow'].map(a=>`<button class="chip harvest ${d.availability===a?'on':''}" onclick="setPostField('availability','${a}')">${a}</button>`).join('')}</div>`;
+  } else if(step===6){
+    body = `<h2 style="font-size:18px; margin-bottom:6px;">Location</h2><p class="muted" style="font-size:13px; margin-bottom:16px;">Only your approximate area is shown.</p>
+      <div class="chipwrap">${AREAS.map(a=>`<button class="chip harvest ${d.location===a?'on':''}" onclick="setPostField('location','${a}')">${a}</button>`).join('')}</div>`;
+  } else if(step===7){
+    body = `<h2 style="font-size:18px; margin-bottom:14px;">Review</h2>${previewCard(d,'harvest')}`;
+  }
+  return `
+  ${topbar('Home Harvest', {backFn: step===1? "cancelPost()":"postStepBack()"})}
+  ${stepBar(7, step)}
+  <div style="padding:0 20px 110px; flex:1;">${body}</div>
+  <div style="position:absolute; left:0; right:0; bottom:0; padding:14px 20px calc(env(safe-area-inset-bottom,0px) + 14px); background:linear-gradient(0deg, var(--bg) 75%, transparent);">
+    <button class="btn btn-sunset" onclick="${step===7?'publishHarvest()':'postStepNext(&quot;postHarvest&quot;,7)'}">${step===7?'POST HARVEST':'Continue'}</button>
+  </div>`;
+};
+
+function previewCard(d, kind){
+  const imgKey = kind==='harvest' ? harvestCategoryPhotoKey(d.category) : categoryPhotoKey(d.category);
+  return `
+  <div class="pcard" style="max-width:220px; margin-bottom:18px;">
+    <div class="thumb thumb-photo" style="background-image:url('${photoUrl(imgKey,400)}');"></div>
+    <div class="body">
+      <div class="title">${d.title || (kind==='harvest'? 'Untitled harvest' : 'Untitled item')}</div>
+      <div class="meta-row">
+        ${kind==='give' || (kind==='harvest'&&d.harvestAction==='give') ? '<span class="price free">FREE</span>' :
+          kind==='sell' ? `<span class="price">${fmtMoney(d.price||0)}</span>` :
+          `<span class="price">${fmtMoney(d.price||0)}/${d.unit||'unit'}</span>`}
+      </div>
+      <div class="loc">${ICON.pin} ${d.location||'—'}</div>
+    </div>
+  </div>
+  <div class="card pad" style="font-size:12.5px; color:var(--ink-soft); line-height:1.6;">
+    ${d.category?`<div><b>Category:</b> ${d.category}</div>`:''}
+    ${d.condition?`<div><b>Condition:</b> ${d.condition}</div>`:''}
+    ${d.quantity?`<div><b>Quantity:</b> ${d.quantity} ${d.unit||''}</div>`:''}
+    ${d.availability?`<div><b>Availability:</b> ${d.availability}</div>`:''}
+    ${d.desc?`<div style="margin-top:6px;">"${d.desc}"</div>`:''}
+  </div>`;
+}
+
+function simulateIncomingOffer(listing, immediate){
+  if(!listing || listing.priceType==='free') return;
+  const buyerPool = ['u_kofi','u_efua','u_yaw','u_akosua'];
+  const buyerId = buyerPool[Math.floor(Math.random()*buyerPool.length)];
+  const buyer = USERS[buyerId];
+  const base = listing.price || 100;
+  const amount = Math.max(10, Math.round((base * (0.72 + Math.random()*0.18)) / 5) * 5);
+  const run = () => {
+    const offer = {id:'o'+(OFFERS.length+1+Math.floor(Math.random()*1000)), listingId:listing.id, buyerId, sellerId:'u_michael', amount, message:'Would you accept this offer?', status:'pending', createdAt:'Just now'};
+    OFFERS.push(offer);
+    const convo = {id:'c'+(CONVERSATIONS.length+1+Math.floor(Math.random()*1000)), withId:buyerId, listingId:listing.id, lastMsg:`Offered ${fmtMoney(amount)}`, time:'Just now', unread:true,
+      thread:[{from:'them', text:`Hi, is the "${listing.title}" still available?`},{from:'them', type:'offer', amount, text:'Would you accept this offer?'}]};
+    CONVERSATIONS.unshift(convo);
+    pushNotification('offer', `${buyer.name} made an offer of ${fmtMoney(amount)} on your listing "${listing.title}".`);
+    if(state.screen!=='postSuccess') render(); else renderBottomNav();
+    toast(`💬 ${buyer.name} just made an offer on "${listing.title}"!`);
+  };
+  if(immediate) run(); else setTimeout(run, 2200);
+}
+function validatePostStep(flow, step, d){
+  if(flow==='sell'){
+    if(step===2 && !((d.title||'').trim())) return 'Please enter a title for your item.';
+    if(step===3 && (!d.price || d.price<=0)) return 'Please enter a price.';
+    if(step===4 && !d.location) return 'Please choose an approximate location.';
+  }
+  if(flow==='give'){
+    if(step===2 && !((d.title||'').trim())) return 'Please enter a title for your item.';
+    if(step===3 && !d.location) return 'Please choose an approximate location.';
+  }
+  if(flow==='harvest'){
+    if(step===1 && !d.category) return "Please select what you're harvesting.";
+    if(step===2 && !((d.title||'').trim())) return 'Please enter a title for your harvest.';
+    if(step===3 && (!d.quantity || d.quantity<=0 || !d.unit)) return 'Please enter a quantity and choose a unit.';
+    if(step===4 && d.harvestAction==='sell' && (!d.price || d.price<=0)) return 'Please enter a price per unit.';
+    if(step===5 && !d.availability) return 'Please choose availability.';
+    if(step===6 && !d.location) return 'Please choose an approximate location.';
+  }
+  return null;
+}
+function postStepNext(screen, max){
+  // pull field values into postData before advancing
+  const d = state.postData;
+  const t = document.getElementById('f_title'); if(t) d.title = t.value;
+  const de = document.getElementById('f_desc'); if(de) d.desc = de.value;
+  const pr = document.getElementById('f_price'); if(pr) d.price = Number(pr.value)||0;
+  const hpr = document.getElementById('f_hprice'); if(hpr) d.price = Number(hpr.value)||0;
+  const qty = document.getElementById('f_qty'); if(qty) d.quantity = Number(qty.value)||0;
+  const flow = screen==='postSell'?'sell':screen==='postGive'?'give':'harvest';
+  const error = validatePostStep(flow, state.postStep, d);
+  if(error){ toast(error); return; }
+  if(state.postStep < max){ state.postStep++; render(); }
+}
+function postStepBack(){
+  if(state.postStep>1){ state.postStep--; render(); }
+}
+function cancelPost(){
+  state.postFlow=null; setTab('home');
+}
+function publishListing(){
+  const d = state.postData;
+  const id = 'l'+(LISTINGS.length+1+Math.floor(Math.random()*1000));
+  const listing = {id, sellerId:'u_michael', title:d.title||'Untitled item', desc:d.desc||'', category:d.category||'other', condition:d.condition||'Good', price:d.price||0, priceType:d.priceType||'fixed', listingType:'sell', location:d.location||state.location.split(',')[0], distance:'0.0 km', status:'active', posted:'Just now', img:categoryPhotoKey(d.category||'other')};
+  LISTINGS.unshift(listing);
+  state.lastPublishedId = id;
+  go('postSuccess', {stack:[]});
+  simulateIncomingOffer(listing, false);
+}
+function publishGive(){
+  const d = state.postData;
+  const id = 'l'+(LISTINGS.length+1+Math.floor(Math.random()*1000));
+  LISTINGS.unshift({id, sellerId:'u_michael', title:d.title||'Untitled item', desc:d.desc||'', category:d.category||'other', condition:'Good', price:0, priceType:'free', listingType:'give', location:d.location||state.location.split(',')[0], distance:'0.0 km', status:'active', posted:'Just now', img:categoryPhotoKey(d.category||'other')});
+  state.lastPublishedId = id;
+  go('giveSuccess', {stack:[]});
+}
+function publishHarvest(){
+  const d = state.postData;
+  const id = 'h'+(HARVEST.length+1+Math.floor(Math.random()*1000));
+  HARVEST.unshift({id, gardenerId:'u_michael', produce:d.title||'Fresh Harvest', desc:d.desc||'', category:d.category||'other', quantity:d.quantity||1, unit:d.unit||'piece', price:d.price||0, listingType:d.harvestAction||'sell', availability:d.availability||'Available now', location:d.location||state.location.split(',')[0], distance:'0.0 km', status:'active', posted:'Just now', icon:HARVEST_CATS.find(c=>c.id===d.category)?.icon||'🌱', img:harvestCategoryPhotoKey(d.category||'other')});
+  state.lastPublishedId = id;
+  go('harvestSuccess', {stack:[]});
+}
+
+/* ---- Share sheet (prototype simulation only — no real API calls) ---- */
+function openShareSheet(title, isHarvest){
+  openSheet(`<h3>Share Listing</h3>
+    <p class="muted" style="font-size:12.5px; margin-bottom:16px;">Share "${title}" with people nearby.</p>
+    <div style="display:flex; flex-direction:column; gap:2px;">
+      <button class="menu-row" onclick="closeSheet(); toast('✓ Listing shared to WhatsApp')">
+        <span class="ic" style="background:#E7F8EC; color:#25D366; font-size:18px;">💬</span>Share to WhatsApp<span class="chev">${ICON.chev}</span>
+      </button>
+      <button class="menu-row" onclick="closeSheet(); toast('🔗 Link copied to clipboard')">
+        <span class="ic">🔗</span>Copy Link<span class="chev">${ICON.chev}</span>
+      </button>
+      <button class="menu-row" onclick="closeSheet(); toast('Opening share options…')">
+        <span class="ic">⋯</span>More Options<span class="chev">${ICON.chev}</span>
+      </button>
+    </div>
+    <p class="faint" style="font-size:10.5px; margin-top:14px;">🧪 Prototype simulation — no message is actually sent.</p>`);
+}
+
+SCREENS.postSuccess = () => {
+  const l = LISTINGS.find(x=>x.id===state.lastPublishedId);
+  return `
+  <div class="success-state">
+    <div class="burst">🎉</div>
+    <h2>Your listing is live!</h2>
+    ${l ? `<div class="pcard" style="max-width:230px; margin:6px 0 4px; text-align:left;">
+      <div class="thumb thumb-photo" style="background-image:url('${photoUrl(l.img||categoryPhotoKey(l.category),400)}');"></div>
+      <div class="body">
+        <div class="title">${l.title}</div>
+        <div class="meta-row">
+          <span class="price">${fmtMoney(l.price)}</span>
+          ${l.priceType==='negotiable'?'<span class="badge badge-negotiable">Negotiable</span>':''}
+        </div>
+        <div class="loc">${ICON.pin} ${l.location}</div>
+      </div>
+    </div>` : ''}
+    <p>Someone nearby may be looking for this right now.</p>
+    <div style="display:flex; flex-direction:column; gap:10px; width:100%; margin-top:6px;">
+      <button class="btn btn-primary" onclick="replace('product',{productId:'${l?.id}'})">VIEW LISTING</button>
+      <button class="btn btn-outline" onclick="openShareSheet('${l?.title||'your listing'}', false)">📤 SHARE LISTING</button>
+      <button class="btn btn-ghost" onclick="setTab('home')">Back to Home</button>
+    </div>
+  </div>`;
+};
+SCREENS.giveSuccess = () => {
+  const l = LISTINGS.find(x=>x.id===state.lastPublishedId);
+  return `
+  <div class="success-state give">
+    <div class="burst">${ICON.smiley}</div>
+    <h2>Your item is live!</h2>
+    ${l ? `<div class="pcard" style="max-width:230px; margin:6px 0 4px; text-align:left;">
+      <div class="thumb thumb-photo" style="background-image:url('${photoUrl(l.img||categoryPhotoKey(l.category),400)}');"></div>
+      <div class="body">
+        <div class="title">${l.title}</div>
+        <div class="meta-row"><span class="price free">FREE</span></div>
+        <div class="loc">${ICON.pin} ${l.location}</div>
+      </div>
+    </div>` : ''}
+    <p>Someone nearby may find exactly what they need.</p>
+    <div style="display:flex; flex-direction:column; gap:10px; width:100%; margin-top:6px;">
+      <button class="btn btn-green" onclick="replace('product',{productId:'${l?.id}'})">VIEW LISTING</button>
+      <button class="btn btn-outline" onclick="openShareSheet('${l?.title||'your item'}', false)">📤 SHARE LISTING</button>
+      <button class="btn btn-ghost" onclick="setTab('home')">Back to Home</button>
+    </div>
+  </div>`;
+};
+SCREENS.harvestSuccess = () => {
+  const h = HARVEST.find(x=>x.id===state.lastPublishedId);
+  return `
+  <div class="success-state">
+    <div class="burst">🌱</div>
+    <h2>Your harvest is ready to share!</h2>
+    ${h ? `<div class="pcard" style="max-width:230px; margin:6px 0 4px; text-align:left;">
+      <div class="thumb thumb-photo" style="background-image:url('${photoUrl(h.img||'tomatoes',400)}');"></div>
+      <div class="body">
+        <div class="title">${h.produce}</div>
+        <div class="meta-row"><span class="price">${h.listingType==='give'?'FREE':fmtMoney(h.price)+'/'+h.unit}</span></div>
+        <div class="loc">${ICON.pin} ${h.location}</div>
+      </div>
+    </div>` : ''}
+    <p>Neighbors nearby can now discover and message you about it.</p>
+    <div style="display:flex; flex-direction:column; gap:10px; width:100%; margin-top:6px;">
+      <button class="btn btn-sunset" onclick="replace('harvest',{harvestId:'${h?.id}'})">VIEW LISTING</button>
+      <button class="btn btn-outline" onclick="openShareSheet('${h?.produce||'your harvest'}', true)">📤 SHARE LISTING</button>
+      <button class="btn btn-ghost" onclick="setTab('home')">Back to Home</button>
+    </div>
+  </div>`;
+};
+/* ================= PROFILE ================= */
+SCREENS.profile = () => `
+  <div class="profile-hero">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+      <span style="font-family:var(--font-display); font-size:16px; font-weight:700;">My Profile</span>
+      <button onclick="go('notifications')" style="border:none;background:rgba(255,255,255,.15); width:34px;height:34px;border-radius:50%; display:flex; align-items:center; justify-content:center; position:relative;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0112 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M9.7 21a2.5 2.5 0 004.6 0"/></svg>
+        ${notifDot()}
+      </button>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      ${initialsAvatar(ME,64,22)}
+      <div>
+        <div style="font-weight:800; font-size:18px; display:flex; align-items:center; gap:6px;">${ME.name} <span class="badge badge-verified" style="background:rgba(255,255,255,.18); color:#fff;">✓ Verified</span></div>
+        <div style="font-size:12.5px; opacity:.9; margin-top:2px;">${ICON.pin} ${ME.location} · 🧪 ${ME.memberSince}</div>
+        <div style="font-size:12.5px; margin-top:4px;"><span class="stars" style="color:var(--gold-400);">★★★★★</span> ${ME.rating} · ${ME.completed} completed</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:18px 18px 90px;">
+    <div class="grid2" style="margin-bottom:20px;">
+      <button class="card pad" style="text-align:left;" onclick="setTab('profile'); go('myListings',{stack:[]});">
+        <div style="font-size:20px; margin-bottom:6px;">📦</div>
+        <div style="font-weight:700; font-size:13.5px;">My Listings</div>
+        <div class="faint" style="font-size:11px;">${LISTINGS.filter(l=>l.sellerId==='u_michael').length+HARVEST.filter(h=>h.gardenerId==='u_michael').length} items</div>
+      </button>
+      <button class="card pad" style="text-align:left;" onclick="go('savedItems')">
+        <div style="font-size:20px; margin-bottom:6px;">❤️</div>
+        <div style="font-weight:700; font-size:13.5px;">Saved Items</div>
+        <div class="faint" style="font-size:11px;">${SAVED.size} saved</div>
+      </button>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div style="padding:6px 12px;">
+        <button class="menu-row" onclick="go('myOffers')"><span class="ic">💬</span>My Offers<span class="chev">${ICON.chev}</span></button>
+        <button class="menu-row" onclick="go('myActivity')"><span class="ic">🧾</span>My Activity<span class="chev">${ICON.chev}</span></button>
+        <button class="menu-row" onclick="go('ratings')"><span class="ic">⭐</span>Ratings<span class="chev">${ICON.chev}</span></button>
+        <button class="menu-row" style="border-bottom:none;" onclick="go('settings')"><span class="ic">⚙️</span>Settings<span class="chev">${ICON.chev}</span></button>
+      </div>
+    </div>
+    <div class="card">
+      <div style="padding:6px 12px;">
+        <button class="menu-row" onclick="go('helpSafety')"><span class="ic">🛡️</span>Help & Safety<span class="chev">${ICON.chev}</span></button>
+        <button class="menu-row" style="border-bottom:none; color:var(--danger);" onclick="toast('Signed out (prototype)')"><span class="ic">🚪</span>Log Out</button>
+      </div>
+    </div>
+  </div>
+`;
+
+/* ---- My Listings ---- */
+state.profileTab = 'active';
+SCREENS.myListings = () => {
+  const mine = LISTINGS.filter(l=>l.sellerId==='u_michael');
+  const mineHarvest = HARVEST.filter(h=>h.gardenerId==='u_michael');
+  const tab = state.profileTab||'active';
+  const tabs = [['active','Active'],['reserved','Reserved'],['sold','Sold'],['given','Given Away'],['harvest','Harvest']];
+  let items = [];
+  if(tab==='harvest') items = mineHarvest;
+  else if(tab==='given') items = mine.filter(l=>l.status==='given');
+  else if(tab==='sold') items = mine.filter(l=>l.status==='sold');
+  else if(tab==='reserved') items = mine.filter(l=>l.status==='reserved');
+  else items = mine.filter(l=>l.status==='active');
+  return `
+  ${topbar('My Listings')}
+  <div style="padding:0 18px 90px;">
+    <div class="tabs" style="margin-bottom:14px;">${tabs.map(([id,label])=>`<button class="tab ${tab===id?'on':''}" onclick="state.profileTab='${id}'; render();">${label}</button>`).join('')}</div>
+    ${!items.length ? emptyState('📦','Nothing here yet', tab==='active'?"You haven't posted anything yet. Sell something or give something a new home.":'Items will appear here once available.') :
+      `<div class="grid2">${items.map(it=> it.produce? harvestCard(it) : listingCardWithStatus(it)).join('')}</div>`}
+  </div>`;
+};
+function listingCardWithStatus(l){
+  const card = productCard(l);
+  if(l.status==='active') return card;
+  return card.replace('<div class="body">', `<div class="body"><span class="badge badge-status-${l.status}" style="margin-bottom:5px; display:inline-block;">${l.status.toUpperCase()}</span>`);
+}
+
+SCREENS.savedItems = () => {
+  const items = [...LISTINGS.filter(l=>SAVED.has(l.id)), ...HARVEST.filter(h=>SAVED.has(h.id))];
+  return `
+  ${topbar('Saved Items')}
+  <div style="padding:0 18px 90px;">
+    ${!items.length ? emptyState('❤️','Nothing saved yet','Save useful things and come back to them later.') :
+      `<div class="grid2">${items.map(it=> it.produce? harvestCard(it) : productCard(it)).join('')}</div>`}
+  </div>`;
+};
+
+SCREENS.myOffers = () => {
+  const mine = OFFERS.filter(o=>o.buyerId==='u_michael' || o.sellerId==='u_michael');
+  return `
+  ${topbar('My Offers')}
+  <div style="padding:0 18px 90px;">
+    ${!mine.length ? emptyState('💬','No offers yet','Offers you make or receive will appear here.') :
+      mine.map(o=>{
+        const l = LISTINGS.find(x=>x.id===o.listingId);
+        const role = o.buyerId==='u_michael' ? 'You offered' : 'Offer received';
+        const statusColor = o.status==='accepted'?'badge-status-active': o.status==='declined'?'badge-status-sold':'badge-negotiable';
+        return `<div class="rowcard" style="margin-bottom:10px;">
+          <div class="thumb-sm" style="background-image:url('${l?photoUrl(l.img||categoryPhotoKey(l.category),200):photoUrl('boxFallback',200)}');"></div>
+          <div class="info">
+            <div class="title">${l?.title||'Listing'}</div>
+            <div class="sub">${role}: <b style="color:var(--ink);">${fmtMoney(o.amount)}</b></div>
+          </div>
+          <span class="badge ${statusColor}">${o.status.toUpperCase()}</span>
+        </div>`;
+      }).join('')}
+  </div>`;
+};
+
+state.activityTab = 'offers';
+SCREENS.myActivity = () => {
+  const tab = state.activityTab || 'offers';
+
+  // Offers: every offer I made or received
+  const myOffers = OFFERS.filter(o=>o.buyerId==='u_michael' || o.sellerId==='u_michael');
+
+  // Reserved: accepted deals awaiting handover (as seller or as buyer), listings + harvest
+  const reservedListings = LISTINGS.filter(l=>l.status==='reserved' && (
+    l.sellerId==='u_michael' || OFFERS.some(o=>o.listingId===l.id && o.buyerId==='u_michael' && o.status==='accepted')
+  ));
+  const reservedHarvest = HARVEST.filter(h=>h.status==='reserved' && h.gardenerId==='u_michael');
+
+  // Completed: sold / given away, listings + harvest, as seller or as buyer
+  const completedListings = LISTINGS.filter(l=>(l.status==='sold'||l.status==='given') && (
+    l.sellerId==='u_michael' || OFFERS.some(o=>o.listingId===l.id && o.buyerId==='u_michael' && o.status==='accepted')
+  ));
+  const completedHarvest = HARVEST.filter(h=>(h.status==='sold'||h.status==='given') && h.gardenerId==='u_michael');
+
+  function roleLine(item, isHarvest){
+    const isMine = isHarvest ? item.gardenerId==='u_michael' : item.sellerId==='u_michael';
+    const priceText = (isHarvest ? item.listingType==='give' : item.priceType==='free') ? 'FREE' : fmtMoney(item.price)+(isHarvest?'/'+item.unit:'');
+    if(item.status==='reserved'){
+      return isMine ? `You're holding this for a buyer · ${priceText}` : `Reserved for you, awaiting handover · ${priceText}`;
+    }
+    if(item.status==='given'){
+      return isMine ? `You gave this away` : `Given to you`;
+    }
+    // sold
+    return isMine ? `You sold · ${priceText}` : `You bought · ${priceText}`;
+  }
+  function activityRow(item, isHarvest){
+    const title = isHarvest ? item.produce : item.title;
+    const img = photoUrl(item.img || (isHarvest?'tomatoes':categoryPhotoKey(item.category)), 200);
+    const target = isHarvest ? `go('harvest',{harvestId:'${item.id}'})` : `go('product',{productId:'${item.id}'})`;
+    return `<button class="rowcard" style="margin-bottom:10px; width:100%; text-align:left;" onclick="${target}">
+      <div class="thumb-sm" style="background-image:url('${img}');"></div>
+      <div class="info"><div class="title">${title}</div><div class="sub">${roleLine(item,isHarvest)}</div></div>
+      <span class="badge badge-status-${item.status}">${item.status.toUpperCase()}</span>
+    </button>`;
+  }
+
+  let body;
+  if(tab==='offers'){
+    body = !myOffers.length ? emptyState('💬','No offers yet','Offers you make or receive will appear here.') :
+      myOffers.map(o=>{
+        const l = LISTINGS.find(x=>x.id===o.listingId);
+        const role = o.buyerId==='u_michael' ? 'You offered' : 'Offer received';
+        const statusColor = o.status==='accepted'?'badge-status-active': o.status==='declined'?'badge-status-sold':'badge-negotiable';
+        return `<div class="rowcard" style="margin-bottom:10px;">
+          <div class="thumb-sm" style="background-image:url('${l?photoUrl(l.img||categoryPhotoKey(l.category),200):photoUrl('boxFallback',200)}');"></div>
+          <div class="info">
+            <div class="title">${l?.title||'Listing'}</div>
+            <div class="sub">${role}: <b style="color:var(--ink);">${fmtMoney(o.amount)}</b></div>
+          </div>
+          <span class="badge ${statusColor}">${o.status.toUpperCase()}</span>
+        </div>`;
+      }).join('');
+  } else if(tab==='reserved'){
+    const items = [...reservedListings.map(l=>({item:l,isHarvest:false})), ...reservedHarvest.map(h=>({item:h,isHarvest:true}))];
+    body = !items.length ? emptyState('🤝','Nothing reserved right now','Accepted deals awaiting handover will show up here.') :
+      items.map(({item,isHarvest})=>activityRow(item,isHarvest)).join('');
+  } else {
+    const items = [...completedListings.map(l=>({item:l,isHarvest:false})), ...completedHarvest.map(h=>({item:h,isHarvest:true}))];
+    body = !items.length ? emptyState('🧾','No completed activity yet','Completed sales, purchases, and gifts will show up here.') :
+      items.map(({item,isHarvest})=>activityRow(item,isHarvest)).join('');
+  }
+
+  return `
+  ${topbar('My Activity')}
+  <div style="padding:0 18px 90px;">
+    <div class="tabs" style="margin-bottom:14px;">
+      <button class="tab ${tab==='offers'?'on':''}" onclick="state.activityTab='offers'; render();">Offers</button>
+      <button class="tab ${tab==='reserved'?'on':''}" onclick="state.activityTab='reserved'; render();">Reserved</button>
+      <button class="tab ${tab==='completed'?'on':''}" onclick="state.activityTab='completed'; render();">Completed</button>
+    </div>
+    ${body}
+  </div>`;
+};
+
+SCREENS.ratings = () => `
+  ${topbar('Ratings')}
+  <div style="padding:6px 18px 90px;">
+    <div class="card pad-lg" style="text-align:center; margin-bottom:14px;">
+      <div style="font-family:var(--font-data); font-size:34px; font-weight:700; color:var(--navy-800);">${ME.rating}</div>
+      <div class="stars" style="font-size:18px;">★★★★★</div>
+      <div class="faint" style="font-size:12px; margin-top:4px;">Based on ${ME.completed} completed transactions</div>
+    </div>
+    <div class="faint" style="font-size:10.5px; margin-bottom:14px;">🧪 Illustrative prototype data — sample reviews for demonstration, not real GoNabor users.</div>
+    ${[["Efua","Great communication, item was exactly as described!"],["Kofi","Smooth pickup, would deal with again."],["Akosua","Friendly and fair with negotiation."]].map(([n,t])=>`
+      <div class="rowcard" style="margin-bottom:10px; align-items:flex-start;">
+        ${initialsAvatar({initials:n[0]},40,14)}
+        <div class="info"><div class="title">${n}</div><div class="sub" style="white-space:normal;">${t}</div></div>
+      </div>`).join('')}
+  </div>`;
+
+SCREENS.settings = () => `
+  ${topbar('Settings')}
+  <div style="padding:6px 18px 90px;">
+    <div class="card" style="margin-bottom:16px;">
+      <div style="padding:6px 12px;">
+        <button class="menu-row" onclick="toast('Edit profile (prototype)')"><span class="ic">👤</span>Edit Profile<span class="chev">${ICON.chev}</span></button>
+        <button class="menu-row" onclick="go('locationEdit')"><span class="ic">📍</span>Change Area<span class="chev">${ICON.chev}</span></button>
+        <button class="menu-row" onclick="toast('Phone verification: +233 •• ••• 4821 (verified)')"><span class="ic">📞</span>Phone Verification<span class="chev">${ICON.chev}</span></button>
+        <button class="menu-row" style="border-bottom:none;" onclick="toast('Notification preferences (prototype)')"><span class="ic">🔔</span>Notification Preferences<span class="chev">${ICON.chev}</span></button>
+      </div>
+    </div>
+    <div class="card">
+      <div style="padding:6px 12px;">
+        <button class="menu-row" onclick="go('helpSafety')"><span class="ic">🛡️</span>Help & Safety<span class="chev">${ICON.chev}</span></button>
+        <button class="menu-row" style="border-bottom:none;" onclick="toast('App version 0.9 (prototype)')"><span class="ic">ℹ️</span>About GoNabor<span class="chev">${ICON.chev}</span></button>
+      </div>
+    </div>
+  </div>`;
+
+SCREENS.helpSafety = () => `
+  ${topbar('Help & Safety')}
+  <div style="padding:6px 18px 90px;">
+    <div class="card pad-lg" style="margin-bottom:16px; background:var(--navy-100); border:none;">
+      <div style="font-weight:700; font-size:14px; margin-bottom:6px; color:var(--navy-800);">🛡️ Staying safe on GoNabor</div>
+      <p style="font-size:12.5px; color:var(--navy-700); line-height:1.6; margin:0;">Meet in a public, well-lit area and inspect items before paying. Never share your OTPs, bank PINs, or passwords with another user. Trust your instincts — if something feels off, walk away and report it.</p>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div style="padding:6px 12px;">
+        <button class="menu-row" onclick="toast('Community Guidelines')"><span class="ic">📋</span>Community Guidelines<span class="chev">${ICON.chev}</span></button>
+        <button class="menu-row" onclick="toast('Prohibited items: weapons, drugs, live animals, counterfeit goods, and other regulated items are not allowed.')"><span class="ic">🚫</span>Prohibited Items Policy<span class="chev">${ICON.chev}</span></button>
+        <button class="menu-row" onclick="reportSheet('user')"><span class="ic">🚩</span>Report a Problem<span class="chev">${ICON.chev}</span></button>
+        <button class="menu-row" style="border-bottom:none;" onclick="toast('Blocked users list is empty')"><span class="ic">🚫</span>Blocked Users<span class="chev">${ICON.chev}</span></button>
+      </div>
+    </div>
+  </div>`;
+/* ================================================================
+   ADMIN DASHBOARD
+   ================================================================ */
+const ADMIN_NAV = [
+  ['dashboard','📊','Dashboard'],['users','👥','Users'],['listings','📦','Listings'],
+  ['harvest','🌱','Home Harvest'],['transactions','🧾','Transactions'],['reports','🚩','Reports'],
+  ['categories','🏷️','Categories'],['analytics','📈','Analytics'],['settings','⚙️','Settings'],
+];
+const ADMIN_USERS = [
+  {name:'Michael Owusu', phone:'+233 24 •••4821', area:'East Legon', status:'Active', joined:'Demo Account', listings:12},
+  {name:'Ama Boateng', phone:'+233 20 •••1187', area:'Adenta', status:'Active', joined:'Demo Account', listings:34},
+  {name:'Kofi Mensah', phone:'+233 55 •••7723', area:'Madina', status:'Active', joined:'Demo Account', listings:8},
+  {name:'Efua Asante', phone:'+233 26 •••4490', area:'Osu', status:'Active', joined:'Demo Account', listings:19},
+  {name:'Yaw Darko', phone:'+233 27 •••9021', area:'Tema', status:'Reported', joined:'Demo Account', listings:3},
+  {name:'Akosua Frimpong', phone:'+233 50 •••3308', area:'Spintex', status:'Active', joined:'Demo Account', listings:15},
+  {name:'Nana Yaa', phone:'+233 24 •••6612', area:'Dansoman', status:'Suspended', joined:'Demo Account', listings:2},
+];
+const ADMIN_REPORTS = [
+  {type:'Listing', target:'Used Car Parts (unverified)', reason:'Suspected scam', by:'Efua A.', date:'26 Aug', status:'Pending'},
+  {type:'User', target:'Yaw Darko', reason:'Slow / no response after payment discussion', by:'Kofi M.', date:'25 Aug', status:'Reviewing'},
+  {type:'Listing', target:'Imported Sneakers (bulk)', reason:'Suspected counterfeit', by:'Akosua F.', date:'24 Aug', status:'Pending'},
+  {type:'Listing', target:'Old Car Battery', reason:'Prohibited item', by:'System flag', date:'22 Aug', status:'Resolved'},
+];
+
+function switchView(v){
+  state.view = v;
+  document.getElementById('phoneWrap').classList.toggle('active', v==='mobile');
+  document.getElementById('adminWrap').style.display = v==='admin' ? 'flex' : 'none';
+  document.getElementById('tabMobileBtn').classList.toggle('active', v==='mobile');
+  document.getElementById('tabAdminBtn').classList.toggle('active', v==='admin');
+  if(v==='admin') renderAdmin();
+}
+function setAdminSection(s){ state.adminSection = s; renderAdmin(); }
+
+function renderAdmin(){
+  const wrap = document.getElementById('adminWrap');
+  const sec = state.adminSection;
+  wrap.innerHTML = `
+    <div class="admin-sidebar">
+      <div class="abrand"><img src="gonabor_logo.png" alt=""><span>GoNabor Admin</span></div>
+      ${ADMIN_NAV.map(([id,ic,label])=>`<button class="anavitem ${sec===id?'on':''}" onclick="setAdminSection('${id}')">${ic} ${label}<span class="dot"></span></button>`).join('')}
+    </div>
+    <div class="admin-main" id="adminMain">
+      <div style="display:flex; align-items:center; gap:8px; background:#FFF3E2; border:1px solid #FBD6A8; color:var(--orange-600); font-size:11.5px; font-weight:800; padding:9px 14px; border-radius:10px; margin-bottom:20px; letter-spacing:.02em;">
+        🧪 PROTOTYPE DATA — all figures below are illustrative demo content for this prototype, not real GoNabor traffic or transactions.
+      </div>
+      <div id="adminSectionBody"></div>
+    </div>`;
+  document.getElementById('adminSectionBody').innerHTML = ADMIN_SCREENS[sec] ? ADMIN_SCREENS[sec]() : ADMIN_SCREENS.dashboard();
+}
+
+const ADMIN_SCREENS = {};
+ADMIN_SCREENS.dashboard = () => `
+  <div class="admin-header"><div><h2>Dashboard</h2><p>Accra & Tema · Illustrative prototype overview</p></div></div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="n">12,540</div><div class="l">Total Users</div><div class="d up">🧪 Demo</div></div>
+    <div class="stat-card"><div class="n">8,420</div><div class="l">Active Listings</div><div class="d up">🧪 Demo</div></div>
+    <div class="stat-card"><div class="n">2,150</div><div class="l">Free Listings</div><div class="d up">🧪 Demo</div></div>
+    <div class="stat-card"><div class="n">4,730</div><div class="l">Transactions</div><div class="d up">🧪 Demo</div></div>
+    <div class="stat-card"><div class="n">640</div><div class="l">Home Harvest Listings</div><div class="d up">🧪 Demo</div></div>
+    <div class="stat-card"><div class="n">320</div><div class="l">Active Gardeners</div><div class="d up">🧪 Demo</div></div>
+    <div class="stat-card"><div class="n">18</div><div class="l">Open Reports</div><div class="d warn">🧪 Demo</div></div>
+    <div class="stat-card"><div class="n">94%</div><div class="l">Verified Users</div><div class="d up">🧪 Demo</div></div>
+  </div>
+  <div style="display:grid; grid-template-columns:1.4fr 1fr; gap:16px;">
+    <div class="a-panel">
+      <div class="a-panel-head"><b style="font-size:14px;">Recent activity</b><span class="faint" style="font-size:10.5px;">Illustrative example events</span></div>
+      <div style="padding:14px 18px;">
+        ${[
+          ['🎉','Michael Owusu sold "Samsung Microwave" for GH₵350','2m ago'],
+          ['🌱',"Ama's Backyard Garden posted new Home Harvest listing: Fresh Tomatoes",'12m ago'],
+          ['🚩','New report filed on listing "Used Car Parts"','40m ago'],
+          ['🎁',"Akosua Frimpong gave away \"Children's Story Books\"",'1h ago'],
+          ['✅','Kofi Mensah verified their phone number','3h ago'],
+        ].map(([ic,txt,t])=>`<div style="display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--line-soft); align-items:flex-start;">
+          <span style="font-size:16px;">${ic}</span>
+          <div style="flex:1; font-size:13px;">${txt}</div>
+          <span class="faint" style="font-size:11px;">${t}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="a-panel">
+      <div class="a-panel-head"><b style="font-size:14px;">Top areas</b><span class="faint" style="font-size:10.5px;">Demo distribution</span></div>
+      <div style="padding:14px 18px;">
+        ${[['East Legon',18],['Adenta',22],['Madina',15],['Osu',12],['Spintex',14],['Tema',19]].map(([a,pct])=>`
+        <div style="margin-bottom:12px;">
+          <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:5px;"><span>${a}</span><b>${pct}%</b></div>
+          <div style="height:6px; background:var(--bg-dim); border-radius:4px; overflow:hidden;"><div style="width:${pct*4}%; height:100%; background:var(--sunset);"></div></div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+
+ADMIN_SCREENS.users = () => `
+  <div class="admin-header"><div><h2>Users</h2><p>Showing ${ADMIN_USERS.length} illustrative demo accounts</p></div><button class="btn btn-outline btn-sm">Export CSV</button></div>
+  <div class="a-tools"><input placeholder="Search users by name or phone..."><select><option>All statuses</option><option>Active</option><option>Reported</option><option>Suspended</option></select></div>
+  <div class="a-panel"><table class="admin-table">
+    <thead><tr><th>User</th><th>Phone</th><th>Area</th><th>Listings</th><th>Account</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+    ${ADMIN_USERS.map(u=>`<tr>
+      <td style="font-weight:700;">${u.name}</td><td>${u.phone}</td><td>${u.area}</td><td>${u.listings}</td><td>${u.joined}</td>
+      <td><span class="a-pill" style="background:${u.status==='Active'?'var(--green-100)':u.status==='Reported'?'#FFF3E2':'var(--danger-soft)'}; color:${u.status==='Active'?'var(--green-700)':u.status==='Reported'?'var(--orange-600)':'var(--danger)'};">${u.status}</span></td>
+      <td><button class="btn btn-outline btn-sm" onclick="alert('View profile: ${u.name}')">View</button></td>
+    </tr>`).join('')}
+    </tbody>
+  </table></div>`;
+
+ADMIN_SCREENS.listings = () => `
+  <div class="admin-header"><div><h2>Listings</h2><p>Showing ${LISTINGS.length} live prototype listings (illustrative demo total: 8,420)</p></div></div>
+  <div class="a-tools"><input placeholder="Search listings..."><select><option>All categories</option>${CATEGORIES.map(c=>`<option>${c.name}</option>`).join('')}</select><select><option>All statuses</option><option>Active</option><option>Reserved</option><option>Sold</option></select></div>
+  <div class="a-panel"><table class="admin-table">
+    <thead><tr><th>Listing</th><th>Seller</th><th>Category</th><th>Price</th><th>Location</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+    ${LISTINGS.map(l=>{
+      const seller = l.sellerId==='u_michael'?ME:USERS[l.sellerId];
+      return `<tr>
+      <td><div style="display:flex; align-items:center; gap:10px;"><div style="width:36px;height:36px;border-radius:8px;flex:0 0 auto;background-image:url('${photoUrl(l.img||categoryPhotoKey(l.category),100)}');background-size:cover;background-position:center;"></div><span style="font-weight:700;">${l.title}</span></div></td>
+      <td>${seller?.name}</td><td>${CATEGORIES.find(c=>c.id===l.category)?.name||l.category}</td>
+      <td>${l.priceType==='free'?'FREE':fmtMoney(l.price)}</td><td>${l.location}</td>
+      <td><span class="a-pill" style="background:var(--navy-100); color:var(--navy-700);">${l.status.toUpperCase()}</span></td>
+      <td><button class="btn btn-danger-outline btn-sm" onclick="alert('Listing removed (prototype): ${l.title}')">Remove</button></td>
+    </tr>`;}).join('')}
+    </tbody>
+  </table></div>`;
+
+ADMIN_SCREENS.harvest = () => `
+  <div class="admin-header"><div><h2>Home Harvest</h2><p>Dedicated administration for GoNabor's strategic Home Harvest vertical (illustrative demo figures)</p></div></div>
+  <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);">
+    <div class="stat-card"><div class="n">320</div><div class="l">Active Gardeners</div><div class="d up">🧪 Demo</div></div>
+    <div class="stat-card"><div class="n">640</div><div class="l">Harvest Listings</div><div class="d up">🧪 Demo</div></div>
+    <div class="stat-card"><div class="n">1,180</div><div class="l">Completed Harvest Deals</div><div class="d up">🧪 Demo</div></div>
+    <div class="stat-card"><div class="n">3</div><div class="l">Reported Harvest Listings</div><div class="d warn">🧪 Demo</div></div>
+  </div>
+  <div class="a-panel"><table class="admin-table">
+    <thead><tr><th>Produce</th><th>Gardener</th><th>Quantity</th><th>Price</th><th>Location</th><th>Status</th></tr></thead>
+    <tbody>
+    ${HARVEST.map(h=>{
+      const g = h.gardenerId==='u_michael'?ME:USERS[h.gardenerId];
+      return `<tr>
+      <td><div style="display:flex; align-items:center; gap:10px;"><div style="width:36px;height:36px;border-radius:8px;flex:0 0 auto;background-image:url('${photoUrl(h.img||'tomatoes',100)}');background-size:cover;background-position:center;"></div><span style="font-weight:700;">${h.produce}</span></div></td>
+      <td>${g?.gardenName||g?.name}</td><td>${h.quantity} ${h.unit}</td>
+      <td>${h.listingType==='give'?'FREE':fmtMoney(h.price)+'/'+h.unit}</td><td>${h.location}</td>
+      <td><span class="a-pill" style="background:var(--green-100); color:var(--green-700);">${h.status.toUpperCase()}</span></td>
+    </tr>`;}).join('')}
+    </tbody>
+  </table></div>`;
+
+ADMIN_SCREENS.transactions = () => `
+  <div class="admin-header"><div><h2>Transactions</h2><p>Illustrative example transactions (demo total: 4,730)</p></div></div>
+  <div class="a-panel"><table class="admin-table">
+    <thead><tr><th>Item</th><th>Buyer</th><th>Seller</th><th>Amount</th><th>Completed</th></tr></thead>
+    <tbody>
+    ${[
+      ['Samsung Galaxy A54','Michael Owusu','Kofi Mensah','GH₵1,150','Yesterday'],
+      ['Office Chair','Nana Yaa','Efua Asante','GH₵140','2 days ago'],
+      ['Fresh Tomatoes (5 bowls)','Kofi Mensah',"Ama's Backyard Garden",'GH₵125','2 days ago'],
+      ['Leather Backpack','Yaw Darko','Efua Asante','GH₵200','4 days ago'],
+      ["Children's Story Books",'Kofi Mensah','Akosua Frimpong','FREE','5 days ago'],
+    ].map(([item,b,s,amt,d])=>`<tr><td style="font-weight:700;">${item}</td><td>${b}</td><td>${s}</td><td>${amt}</td><td>${d}</td></tr>`).join('')}
+    </tbody>
+  </table></div>`;
+
+ADMIN_SCREENS.reports = () => `
+  <div class="admin-header"><div><h2>Reports</h2><p>User and listing reports awaiting review</p></div></div>
+  <div class="a-panel"><table class="admin-table">
+    <thead><tr><th>Type</th><th>Target</th><th>Reason</th><th>Reported by</th><th>Date</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+    ${ADMIN_REPORTS.map(r=>`<tr>
+      <td>${r.type}</td><td style="font-weight:700;">${r.target}</td><td>${r.reason}</td><td>${r.by}</td><td>${r.date}</td>
+      <td><span class="a-pill" style="background:${r.status==='Resolved'?'var(--green-100)':'#FFF3E2'}; color:${r.status==='Resolved'?'var(--green-700)':'var(--orange-600)'};">${r.status}</span></td>
+      <td><button class="btn btn-outline btn-sm" onclick="alert('Report opened (prototype)')">Review</button></td>
+    </tr>`).join('')}
+    </tbody>
+  </table></div>`;
+
+ADMIN_SCREENS.categories = () => `
+  <div class="admin-header"><div><h2>Categories</h2><p>Marketplace and Home Harvest category management</p></div></div>
+  <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);">
+    ${CATEGORIES.map(c=>`<div class="stat-card"><div class="n" style="font-size:20px;">${c.icon} ${c.name}</div><div class="l">${LISTINGS.filter(l=>l.category===c.id).length} active listings</div></div>`).join('')}
+  </div>
+  <div class="a-panel-head" style="border:1px solid var(--line); border-radius:14px 14px 0 0; margin-top:8px;"><b style="font-size:14px;">Home Harvest categories</b></div>
+  <div class="a-panel" style="border-top:none; border-radius:0 0 14px 14px; padding:16px;">
+    <div class="chipwrap">${HARVEST_CATS.map(c=>`<span class="chip on harvest" style="pointer-events:none;">${c.icon} ${c.name}</span>`).join('')}</div>
+  </div>`;
+
+ADMIN_SCREENS.analytics = () => `
+  <div class="admin-header"><div><h2>Analytics</h2><p>Prototype metrics — structured for a future live-data backend</p></div></div>
+  <div class="a-panel pad-lg" style="padding:20px; margin-bottom:16px;">
+    <b style="font-size:13.5px;">Weekly new listings (Give vs Sell vs Harvest)</b>
+    <div style="display:flex; align-items:flex-end; gap:14px; height:150px; margin-top:20px; padding:0 6px;">
+      ${[['Mon',40,60,20],['Tue',55,70,30],['Wed',48,65,45],['Thu',60,80,38],['Fri',70,95,50],['Sat',90,110,60],['Sun',65,85,40]].map(([d,g,s,h])=>`
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;">
+          <div style="display:flex; align-items:flex-end; gap:2px; height:110px;">
+            <div title="Give" style="width:8px; height:${g}px; background:var(--green-500); border-radius:3px 3px 0 0;"></div>
+            <div title="Sell" style="width:8px; height:${s}px; background:var(--navy-600); border-radius:3px 3px 0 0;"></div>
+            <div title="Harvest" style="width:8px; height:${h}px; background:var(--orange-500); border-radius:3px 3px 0 0;"></div>
+          </div>
+          <span class="faint" style="font-size:10.5px;">${d}</span>
+        </div>`).join('')}
+    </div>
+    <div style="display:flex; gap:16px; margin-top:16px; font-size:11.5px;">
+      <span><i style="display:inline-block;width:9px;height:9px;background:var(--green-500);border-radius:2px;margin-right:5px;"></i>Give</span>
+      <span><i style="display:inline-block;width:9px;height:9px;background:var(--navy-600);border-radius:2px;margin-right:5px;"></i>Sell</span>
+      <span><i style="display:inline-block;width:9px;height:9px;background:var(--orange-500);border-radius:2px;margin-right:5px;"></i>Harvest</span>
+    </div>
+  </div>
+  <div class="stat-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="stat-card"><div class="n">62%</div><div class="l">Listing → Message conversion</div><div class="d up">🧪 Demo</div></div>
+    <div class="stat-card"><div class="n">4.2 hrs</div><div class="l">Median time-to-first-message</div><div class="d up">🧪 Demo</div></div>
+    <div class="stat-card"><div class="n">71%</div><div class="l">Negotiated offers accepted</div><div class="d up">🧪 Demo</div></div>
+  </div>`;
+
+ADMIN_SCREENS.settings = () => `
+  <div class="admin-header"><div><h2>Settings</h2><p>Platform configuration (prototype)</p></div></div>
+  <div class="a-panel pad-lg" style="padding:20px; display:flex; flex-direction:column; gap:16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;"><div><b style="font-size:13.5px;">Service provider</b><div class="faint" style="font-size:12px;">Zometrix Innovations</div></div></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line-soft); padding-top:14px;"><div><b style="font-size:13.5px;">Target initial markets</b><div class="faint" style="font-size:12px;">Accra, Tema</div></div><span class="a-pill" style="background:var(--navy-100); color:var(--navy-700);">PROTOTYPE</span></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line-soft); padding-top:14px;"><div><b style="font-size:13.5px;">Currency</b><div class="faint" style="font-size:12px;">Ghanaian Cedi (GH₵)</div></div></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--line-soft); padding-top:14px;"><div><b style="font-size:13.5px;">Roadmap</b><div class="faint" style="font-size:12px;">2026 Q3–Q4: Scale Accra & Tema · 2027 Q1–Q2: Expand to Kumasi · 2027 Q3+: Payments & delivery partnerships</div></div></div>
+  </div>`;
+
+/* ================= INIT ================= */
+function resetDemo(){
+  location.reload();
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  render();
+  setTimeout(()=>{
+    if(state.screen==='splash'){ go('onboarding', {stack:[]}); }
+  }, 1800);
+});
+</script>
+</body>
+</html>
